@@ -1,11 +1,11 @@
 {
   "source": {
-    "hash": "0x3e147803b363d034b0a52f38ef8fb200777b4298b43fa1003ecc00a2dd571312",
+    "hash": "0xae778fbd6f6cc1cb0f7b11b423621d99cd6586bce65888bc77eb3d2d1b9714b2",
     "language": "ink! 3.4.0",
     "compiler": "rustc 1.65.0-nightly"
   },
   "contract": {
-    "name": "lucky_raffle",
+    "name": "reward_manager",
     "version": "0.1.0",
     "authors": [
       "guigou"
@@ -15,35 +15,7 @@
     "spec": {
       "constructors": [
         {
-          "args": [
-            {
-              "label": "dapps_staking_developer_address",
-              "type": {
-                "displayName": [
-                  "AccountId"
-                ],
-                "type": 8
-              }
-            },
-            {
-              "label": "lucky_oracle_address",
-              "type": {
-                "displayName": [
-                  "AccountId"
-                ],
-                "type": 8
-              }
-            },
-            {
-              "label": "reward_manager_address",
-              "type": {
-                "displayName": [
-                  "AccountId"
-                ],
-                "type": 8
-              }
-            }
-          ],
+          "args": [],
           "docs": [],
           "label": "new",
           "payable": false,
@@ -57,32 +29,10 @@
             {
               "docs": [],
               "indexed": true,
-              "label": "contract",
+              "label": "account",
               "type": {
                 "displayName": [
                   "AccountId"
-                ],
-                "type": 8
-              }
-            },
-            {
-              "docs": [],
-              "indexed": true,
-              "label": "era",
-              "type": {
-                "displayName": [
-                  "u32"
-                ],
-                "type": 2
-              }
-            },
-            {
-              "docs": [],
-              "indexed": false,
-              "label": "pending_rewards",
-              "type": {
-                "displayName": [
-                  "Balance"
                 ],
                 "type": 1
               }
@@ -90,181 +40,70 @@
             {
               "docs": [],
               "indexed": false,
-              "label": "nb_winners",
+              "label": "era",
               "type": {
                 "displayName": [
-                  "u8"
+                  "u32"
                 ],
-                "type": 10
+                "type": 8
+              }
+            },
+            {
+              "docs": [],
+              "indexed": false,
+              "label": "amount",
+              "type": {
+                "displayName": [
+                  "Balance"
+                ],
+                "type": 4
               }
             }
           ],
           "docs": [
-            " Event emitted when the Rafle is done"
+            " Event emitted when a reward is pending"
           ],
-          "label": "RaffleDone"
+          "label": "PendingReward"
+        },
+        {
+          "args": [
+            {
+              "docs": [],
+              "indexed": true,
+              "label": "account",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 1
+              }
+            },
+            {
+              "docs": [],
+              "indexed": false,
+              "label": "amount",
+              "type": {
+                "displayName": [
+                  "Balance"
+                ],
+                "type": 4
+              }
+            }
+          ],
+          "docs": [
+            " Event emitted when a user claim rewards"
+          ],
+          "label": "RewardsClaimed"
         }
       ],
       "messages": [
         {
           "args": [
             {
-              "label": "era",
-              "type": {
-                "displayName": [
-                  "u32"
-                ],
-                "type": 2
-              }
-            }
-          ],
-          "docs": [],
-          "label": "run_raffle",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "Result"
-            ],
-            "type": 14
-          },
-          "selector": "0xe2b0a726"
-        },
-        {
-          "args": [],
-          "docs": [],
-          "label": "get_role_raffle_manager",
-          "mutates": false,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "RoleType"
-            ],
-            "type": 2
-          },
-          "selector": "0xa528dbca"
-        },
-        {
-          "args": [
-            {
-              "label": "address",
-              "type": {
-                "displayName": [
-                  "AccountId"
-                ],
-                "type": 8
-              }
-            }
-          ],
-          "docs": [],
-          "label": "set_dapps_staking_developer_address",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "Result"
-            ],
-            "type": 14
-          },
-          "selector": "0xb845797e"
-        },
-        {
-          "args": [],
-          "docs": [],
-          "label": "get_dapps_staking_developer_address",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "AccountId"
-            ],
-            "type": 8
-          },
-          "selector": "0xeb967e60"
-        },
-        {
-          "args": [
-            {
-              "label": "address",
-              "type": {
-                "displayName": [
-                  "AccountId"
-                ],
-                "type": 8
-              }
-            }
-          ],
-          "docs": [],
-          "label": "set_lucky_oracle_address",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "Result"
-            ],
-            "type": 14
-          },
-          "selector": "0x70df887f"
-        },
-        {
-          "args": [],
-          "docs": [],
-          "label": "get_lucky_oracle_address",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "AccountId"
-            ],
-            "type": 8
-          },
-          "selector": "0x7cb9218b"
-        },
-        {
-          "args": [
-            {
-              "label": "address",
-              "type": {
-                "displayName": [
-                  "AccountId"
-                ],
-                "type": 8
-              }
-            }
-          ],
-          "docs": [],
-          "label": "set_reward_manager_address",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "Result"
-            ],
-            "type": 14
-          },
-          "selector": "0xec03e31d"
-        },
-        {
-          "args": [],
-          "docs": [],
-          "label": "get_reward_manager_address",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "AccountId"
-            ],
-            "type": 8
-          },
-          "selector": "0x26685ebb"
-        },
-        {
-          "args": [
-            {
               "label": "new_code_hash",
               "type": {
                 "displayName": [],
-                "type": 9
+                "type": 2
               }
             }
           ],
@@ -276,120 +115,139 @@
             "displayName": [
               "Result"
             ],
-            "type": 14
+            "type": 16
           },
           "selector": "0x1345543d"
         },
         {
-          "args": [
-            {
-              "label": "value",
-              "type": {
-                "displayName": [
-                  "Balance"
-                ],
-                "type": 1
-              }
-            }
-          ],
-          "docs": [],
-          "label": "withdraw",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "Result"
-            ],
-            "type": 14
-          },
-          "selector": "0x410fcc9d"
-        },
-        {
           "args": [],
           "docs": [],
-          "label": "Raffle::get_last_era_done",
+          "label": "get_role_reward_manager",
           "mutates": false,
           "payable": false,
           "returnType": {
             "displayName": [
-              "raffle_external",
-              "GetLastEraDoneOutput"
+              "RoleType"
             ],
-            "type": 2
+            "type": 8
           },
-          "selector": "0x83f23bb1"
+          "selector": "0xe37044e4"
+        },
+        {
+          "args": [],
+          "docs": [],
+          "label": "get_role_reward_viewer",
+          "mutates": false,
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "RoleType"
+            ],
+            "type": 8
+          },
+          "selector": "0x3c40d3be"
+        },
+        {
+          "args": [],
+          "docs": [
+            " claim all pending rewards for the current account",
+            " After claiming, there is not anymore pending rewards for this account"
+          ],
+          "label": "Psp22Reward::claim",
+          "mutates": true,
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "psp22reward_external",
+              "ClaimOutput"
+            ],
+            "type": 20
+          },
+          "selector": "0x51be5832"
         },
         {
           "args": [
             {
-              "label": "ratio",
+              "label": "from",
               "type": {
                 "displayName": [
-                  "raffle_external",
-                  "SetRatioDistributionInput1"
-                ],
-                "type": 0
-              }
-            },
-            {
-              "label": "total_ratio",
-              "type": {
-                "displayName": [
-                  "raffle_external",
-                  "SetRatioDistributionInput2"
+                  "psp22reward_external",
+                  "GetPendingRewardsFromInput1"
                 ],
                 "type": 1
               }
             }
           ],
           "docs": [
-            " Set the rate sharing by the winners",
-            " First winner will receive : total_rewards * ratio[0] / total_ratio",
-            " Second winner will receive : total_rewards * ratio[1] / total_ratio",
-            " if ratio[n] equals to zero or is empty, tne winner n will receive nothing",
-            " Sum(ratio[i]) <= total_ratio. Otherwise teh error IncorrectRatio is expected"
+            " return the pending rewards for a given account."
           ],
-          "label": "Raffle::set_ratio_distribution",
+          "label": "Psp22Reward::get_pending_rewards_from",
           "mutates": true,
           "payable": false,
           "returnType": {
             "displayName": [
-              "raffle_external",
-              "SetRatioDistributionOutput"
+              "psp22reward_external",
+              "GetPendingRewardsFromOutput"
+            ],
+            "type": 21
+          },
+          "selector": "0xf53a4041"
+        },
+        {
+          "args": [
+            {
+              "label": "era",
+              "type": {
+                "displayName": [
+                  "psp22reward_external",
+                  "FundRewardsAndAddWinnersInput1"
+                ],
+                "type": 8
+              }
+            },
+            {
+              "label": "accounts",
+              "type": {
+                "displayName": [
+                  "psp22reward_external",
+                  "FundRewardsAndAddWinnersInput2"
+                ],
+                "type": 5
+              }
+            }
+          ],
+          "docs": [
+            " Add the accounts in the list of winners for a given era",
+            " accounts contains the list of winners and the rewards by account"
+          ],
+          "label": "Psp22Reward::fund_rewards_and_add_winners",
+          "mutates": true,
+          "payable": true,
+          "returnType": {
+            "displayName": [
+              "psp22reward_external",
+              "FundRewardsAndAddWinnersOutput"
             ],
             "type": 20
           },
-          "selector": "0x98737fd4"
+          "selector": "0xc218e5ba"
         },
         {
           "args": [],
-          "docs": [],
-          "label": "Raffle::get_total_ratio_distribution",
+          "docs": [
+            " return true if the current account has pending rewards"
+          ],
+          "label": "Psp22Reward::has_pending_rewards",
           "mutates": false,
           "payable": false,
           "returnType": {
             "displayName": [
-              "raffle_external",
-              "GetTotalRatioDistributionOutput"
+              "psp22reward_external",
+              "HasPendingRewardsOutput"
             ],
-            "type": 1
+            "type": 23
           },
-          "selector": "0x9b68910e"
-        },
-        {
-          "args": [],
-          "docs": [],
-          "label": "Raffle::get_ratio_distribution",
-          "mutates": false,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "raffle_external",
-              "GetRatioDistributionOutput"
-            ],
-            "type": 0
-          },
-          "selector": "0xda5dc8c5"
+          "selector": "0x4fa2ad68"
         },
         {
           "args": [
@@ -400,7 +258,7 @@
                   "accesscontrol_external",
                   "RevokeRoleInput1"
                 ],
-                "type": 2
+                "type": 8
               }
             },
             {
@@ -410,7 +268,7 @@
                   "accesscontrol_external",
                   "RevokeRoleInput2"
                 ],
-                "type": 8
+                "type": 1
               }
             }
           ],
@@ -431,7 +289,7 @@
               "accesscontrol_external",
               "RevokeRoleOutput"
             ],
-            "type": 21
+            "type": 24
           },
           "selector": "0x6e4f0991"
         },
@@ -442,9 +300,47 @@
               "type": {
                 "displayName": [
                   "accesscontrol_external",
+                  "HasRoleInput1"
+                ],
+                "type": 8
+              }
+            },
+            {
+              "label": "address",
+              "type": {
+                "displayName": [
+                  "accesscontrol_external",
+                  "HasRoleInput2"
+                ],
+                "type": 1
+              }
+            }
+          ],
+          "docs": [
+            " Returns `true` if `account` has been granted `role`."
+          ],
+          "label": "AccessControl::has_role",
+          "mutates": false,
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "accesscontrol_external",
+              "HasRoleOutput"
+            ],
+            "type": 23
+          },
+          "selector": "0xc1d9ac18"
+        },
+        {
+          "args": [
+            {
+              "label": "role",
+              "type": {
+                "displayName": [
+                  "accesscontrol_external",
                   "GrantRoleInput1"
                 ],
-                "type": 2
+                "type": 8
               }
             },
             {
@@ -454,7 +350,7 @@
                   "accesscontrol_external",
                   "GrantRoleInput2"
                 ],
-                "type": 8
+                "type": 1
               }
             }
           ],
@@ -476,7 +372,7 @@
               "accesscontrol_external",
               "GrantRoleOutput"
             ],
-            "type": 21
+            "type": 24
           },
           "selector": "0x4ac062fd"
         },
@@ -489,7 +385,7 @@
                   "accesscontrol_external",
                   "GetRoleAdminInput1"
                 ],
-                "type": 2
+                "type": 8
               }
             }
           ],
@@ -504,7 +400,7 @@
               "accesscontrol_external",
               "GetRoleAdminOutput"
             ],
-            "type": 2
+            "type": 8
           },
           "selector": "0x83da3bb2"
         },
@@ -515,47 +411,9 @@
               "type": {
                 "displayName": [
                   "accesscontrol_external",
-                  "HasRoleInput1"
-                ],
-                "type": 2
-              }
-            },
-            {
-              "label": "address",
-              "type": {
-                "displayName": [
-                  "accesscontrol_external",
-                  "HasRoleInput2"
-                ],
-                "type": 8
-              }
-            }
-          ],
-          "docs": [
-            " Returns `true` if `account` has been granted `role`."
-          ],
-          "label": "AccessControl::has_role",
-          "mutates": false,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "accesscontrol_external",
-              "HasRoleOutput"
-            ],
-            "type": 22
-          },
-          "selector": "0xc1d9ac18"
-        },
-        {
-          "args": [
-            {
-              "label": "role",
-              "type": {
-                "displayName": [
-                  "accesscontrol_external",
                   "RenounceRoleInput1"
                 ],
-                "type": 2
+                "type": 8
               }
             },
             {
@@ -565,7 +423,7 @@
                   "accesscontrol_external",
                   "RenounceRoleInput2"
                 ],
-                "type": 8
+                "type": 1
               }
             }
           ],
@@ -590,7 +448,7 @@
               "accesscontrol_external",
               "RenounceRoleOutput"
             ],
-            "type": 21
+            "type": 24
           },
           "selector": "0xeaf1248a"
         }
@@ -606,34 +464,16 @@
                   {
                     "layout": {
                       "cell": {
-                        "key": "0x8329d2dc00000000000000000000000000000000000000000000000000000000",
+                        "key": "0x958a663500000000000000000000000000000000000000000000000000000000",
                         "ty": 0
                       }
                     },
-                    "name": "ratio_distribution"
-                  },
-                  {
-                    "layout": {
-                      "cell": {
-                        "key": "0x8429d2dc00000000000000000000000000000000000000000000000000000000",
-                        "ty": 1
-                      }
-                    },
-                    "name": "total_ratio_distribution"
-                  },
-                  {
-                    "layout": {
-                      "cell": {
-                        "key": "0x8529d2dc00000000000000000000000000000000000000000000000000000000",
-                        "ty": 2
-                      }
-                    },
-                    "name": "last_era_done"
+                    "name": "pending_rewards"
                   }
                 ]
               }
             },
-            "name": "raffle"
+            "name": "reward"
           },
           {
             "layout": {
@@ -643,7 +483,7 @@
                     "layout": {
                       "cell": {
                         "key": "0x75b08c5a00000000000000000000000000000000000000000000000000000000",
-                        "ty": 3
+                        "ty": 7
                       }
                     },
                     "name": "admin_roles"
@@ -656,7 +496,7 @@
                             "layout": {
                               "cell": {
                                 "key": "0x2779f6fc00000000000000000000000000000000000000000000000000000000",
-                                "ty": 6
+                                "ty": 11
                               }
                             },
                             "name": "members"
@@ -672,7 +512,7 @@
                                         "layout": {
                                           "cell": {
                                             "key": "0x2979f6fc00000000000000000000000000000000000000000000000000000000",
-                                            "ty": 11
+                                            "ty": 13
                                           }
                                         },
                                         "name": null
@@ -703,7 +543,7 @@
                                 "layout": {
                                   "cell": {
                                     "key": "0x77b08c5a00000000000000000000000000000000000000000000000000000000",
-                                    "ty": 11
+                                    "ty": 13
                                   }
                                 },
                                 "name": null
@@ -722,33 +562,6 @@
               }
             },
             "name": "access"
-          },
-          {
-            "layout": {
-              "cell": {
-                "key": "0x0000000000000000000000000000000000000000000000000000000000000000",
-                "ty": 8
-              }
-            },
-            "name": "dapps_staking_developer_address"
-          },
-          {
-            "layout": {
-              "cell": {
-                "key": "0x0100000000000000000000000000000000000000000000000000000000000000",
-                "ty": 8
-              }
-            },
-            "name": "lucky_oracle_address"
-          },
-          {
-            "layout": {
-              "cell": {
-                "key": "0x0200000000000000000000000000000000000000000000000000000000000000",
-                "ty": 8
-              }
-            },
-            "name": "reward_manager_address"
           }
         ]
       }
@@ -758,128 +571,40 @@
         "id": 0,
         "type": {
           "def": {
-            "sequence": {
-              "type": 1
+            "composite": {
+              "fields": [
+                {
+                  "type": 5
+                }
+              ]
             }
-          }
+          },
+          "params": [
+            {
+              "name": "K",
+              "type": 1
+            },
+            {
+              "name": "V",
+              "type": 4
+            }
+          ],
+          "path": [
+            "openbrush_lang",
+            "storage",
+            "mapping",
+            "Mapping"
+          ]
         }
       },
       {
         "id": 1,
         "type": {
           "def": {
-            "primitive": "u128"
-          }
-        }
-      },
-      {
-        "id": 2,
-        "type": {
-          "def": {
-            "primitive": "u32"
-          }
-        }
-      },
-      {
-        "id": 3,
-        "type": {
-          "def": {
             "composite": {
               "fields": [
                 {
-                  "type": 4
-                }
-              ]
-            }
-          },
-          "params": [
-            {
-              "name": "K",
-              "type": 2
-            },
-            {
-              "name": "V",
-              "type": 2
-            }
-          ],
-          "path": [
-            "openbrush_lang",
-            "storage",
-            "mapping",
-            "Mapping"
-          ]
-        }
-      },
-      {
-        "id": 4,
-        "type": {
-          "def": {
-            "sequence": {
-              "type": 5
-            }
-          }
-        }
-      },
-      {
-        "id": 5,
-        "type": {
-          "def": {
-            "tuple": [
-              2,
-              2
-            ]
-          }
-        }
-      },
-      {
-        "id": 6,
-        "type": {
-          "def": {
-            "composite": {
-              "fields": [
-                {
-                  "type": 12
-                }
-              ]
-            }
-          },
-          "params": [
-            {
-              "name": "K",
-              "type": 7
-            },
-            {
-              "name": "V",
-              "type": 11
-            }
-          ],
-          "path": [
-            "openbrush_lang",
-            "storage",
-            "mapping",
-            "Mapping"
-          ]
-        }
-      },
-      {
-        "id": 7,
-        "type": {
-          "def": {
-            "tuple": [
-              2,
-              8
-            ]
-          }
-        }
-      },
-      {
-        "id": 8,
-        "type": {
-          "def": {
-            "composite": {
-              "fields": [
-                {
-                  "type": 9,
+                  "type": 2,
                   "typeName": "[u8; 32]"
                 }
               ]
@@ -893,11 +618,96 @@
         }
       },
       {
-        "id": 9,
+        "id": 2,
         "type": {
           "def": {
             "array": {
               "len": 32,
+              "type": 3
+            }
+          }
+        }
+      },
+      {
+        "id": 3,
+        "type": {
+          "def": {
+            "primitive": "u8"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "type": {
+          "def": {
+            "primitive": "u128"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "type": {
+          "def": {
+            "sequence": {
+              "type": 6
+            }
+          }
+        }
+      },
+      {
+        "id": 6,
+        "type": {
+          "def": {
+            "tuple": [
+              1,
+              4
+            ]
+          }
+        }
+      },
+      {
+        "id": 7,
+        "type": {
+          "def": {
+            "composite": {
+              "fields": [
+                {
+                  "type": 9
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "K",
+              "type": 8
+            },
+            {
+              "name": "V",
+              "type": 8
+            }
+          ],
+          "path": [
+            "openbrush_lang",
+            "storage",
+            "mapping",
+            "Mapping"
+          ]
+        }
+      },
+      {
+        "id": 8,
+        "type": {
+          "def": {
+            "primitive": "u32"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "type": {
+          "def": {
+            "sequence": {
               "type": 10
             }
           }
@@ -907,7 +717,10 @@
         "id": 10,
         "type": {
           "def": {
-            "primitive": "u8"
+            "tuple": [
+              8,
+              8
+            ]
           }
         }
       },
@@ -915,17 +728,40 @@
         "id": 11,
         "type": {
           "def": {
-            "tuple": []
-          }
+            "composite": {
+              "fields": [
+                {
+                  "type": 14
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "K",
+              "type": 12
+            },
+            {
+              "name": "V",
+              "type": 13
+            }
+          ],
+          "path": [
+            "openbrush_lang",
+            "storage",
+            "mapping",
+            "Mapping"
+          ]
         }
       },
       {
         "id": 12,
         "type": {
           "def": {
-            "sequence": {
-              "type": 13
-            }
+            "tuple": [
+              8,
+              1
+            ]
           }
         }
       },
@@ -933,10 +769,7 @@
         "id": 13,
         "type": {
           "def": {
-            "tuple": [
-              7,
-              11
-            ]
+            "tuple": []
           }
         }
       },
@@ -944,12 +777,33 @@
         "id": 14,
         "type": {
           "def": {
+            "sequence": {
+              "type": 15
+            }
+          }
+        }
+      },
+      {
+        "id": 15,
+        "type": {
+          "def": {
+            "tuple": [
+              12,
+              13
+            ]
+          }
+        }
+      },
+      {
+        "id": 16,
+        "type": {
+          "def": {
             "variant": {
               "variants": [
                 {
                   "fields": [
                     {
-                      "type": 11
+                      "type": 13
                     }
                   ],
                   "index": 0,
@@ -958,7 +812,7 @@
                 {
                   "fields": [
                     {
-                      "type": 15
+                      "type": 17
                     }
                   ],
                   "index": 1,
@@ -970,11 +824,11 @@
           "params": [
             {
               "name": "T",
-              "type": 11
+              "type": 13
             },
             {
               "name": "E",
-              "type": 15
+              "type": 17
             }
           ],
           "path": [
@@ -983,7 +837,7 @@
         }
       },
       {
-        "id": 15,
+        "id": 17,
         "type": {
           "def": {
             "variant": {
@@ -991,55 +845,83 @@
                 {
                   "fields": [
                     {
-                      "type": 16,
-                      "typeName": "AccessControlError"
+                      "type": 18,
+                      "typeName": "RewardError"
                     }
                   ],
                   "index": 0,
-                  "name": "AccessControlError"
+                  "name": "RewardError"
                 },
                 {
                   "fields": [
                     {
-                      "type": 17,
-                      "typeName": "RaffleError"
+                      "type": 19,
+                      "typeName": "AccessControlError"
                     }
                   ],
                   "index": 1,
-                  "name": "RaffleError"
+                  "name": "AccessControlError"
                 },
                 {
                   "index": 2,
-                  "name": "RaffleAlreadyDone"
-                },
-                {
-                  "index": 3,
-                  "name": "CrossContractCallError1"
-                },
-                {
-                  "index": 4,
-                  "name": "CrossContractCallError2"
-                },
-                {
-                  "index": 5,
-                  "name": "TransferError"
-                },
-                {
-                  "index": 6,
                   "name": "UpgradeError"
                 }
               ]
             }
           },
           "path": [
-            "lucky_raffle",
-            "rafle_contract",
+            "reward_manager",
+            "reward_manager",
             "ContractError"
           ]
         }
       },
       {
-        "id": 16,
+        "id": 18,
+        "type": {
+          "def": {
+            "variant": {
+              "variants": [
+                {
+                  "index": 0,
+                  "name": "InsufficientTransferredBalance"
+                },
+                {
+                  "index": 1,
+                  "name": "TransferError"
+                },
+                {
+                  "index": 2,
+                  "name": "AddOverFlow"
+                },
+                {
+                  "index": 3,
+                  "name": "NoReward"
+                },
+                {
+                  "fields": [
+                    {
+                      "type": 19,
+                      "typeName": "AccessControlError"
+                    }
+                  ],
+                  "index": 4,
+                  "name": "AccessControlError"
+                }
+              ]
+            }
+          },
+          "path": [
+            "lucky",
+            "traits",
+            "reward",
+            "psp22_reward",
+            "RewardError"
+          ]
+        }
+      },
+      {
+        "id": 19,
         "type": {
           "def": {
             "variant": {
@@ -1069,155 +951,6 @@
         }
       },
       {
-        "id": 17,
-        "type": {
-          "def": {
-            "variant": {
-              "variants": [
-                {
-                  "index": 0,
-                  "name": "RaffleAlreadyDone"
-                },
-                {
-                  "index": 1,
-                  "name": "NoReward"
-                },
-                {
-                  "index": 2,
-                  "name": "NoRatioSet"
-                },
-                {
-                  "index": 3,
-                  "name": "IncorrectRatio"
-                },
-                {
-                  "index": 4,
-                  "name": "NoParticipant"
-                },
-                {
-                  "index": 5,
-                  "name": "TooManyWinners"
-                },
-                {
-                  "index": 6,
-                  "name": "DivByZero"
-                },
-                {
-                  "index": 7,
-                  "name": "MulOverFlow"
-                },
-                {
-                  "index": 8,
-                  "name": "AddOverFlow"
-                },
-                {
-                  "fields": [
-                    {
-                      "type": 18,
-                      "typeName": "HelperError"
-                    }
-                  ],
-                  "index": 9,
-                  "name": "HelperError"
-                },
-                {
-                  "fields": [
-                    {
-                      "type": 16,
-                      "typeName": "AccessControlError"
-                    }
-                  ],
-                  "index": 10,
-                  "name": "AccessControlError"
-                }
-              ]
-            }
-          },
-          "path": [
-            "lucky",
-            "traits",
-            "raffle",
-            "RaffleError"
-          ]
-        }
-      },
-      {
-        "id": 18,
-        "type": {
-          "def": {
-            "variant": {
-              "variants": [
-                {
-                  "index": 0,
-                  "name": "DivByZero"
-                },
-                {
-                  "index": 1,
-                  "name": "MulOverFlow"
-                },
-                {
-                  "index": 2,
-                  "name": "AddOverFlow"
-                },
-                {
-                  "index": 3,
-                  "name": "SubOverFlow"
-                },
-                {
-                  "fields": [
-                    {
-                      "type": 19,
-                      "typeName": "RandomGeneratorError"
-                    }
-                  ],
-                  "index": 4,
-                  "name": "RandomGeneratorError"
-                }
-              ]
-            }
-          },
-          "path": [
-            "lucky",
-            "helpers",
-            "helper",
-            "HelperError"
-          ]
-        }
-      },
-      {
-        "id": 19,
-        "type": {
-          "def": {
-            "variant": {
-              "variants": [
-                {
-                  "index": 0,
-                  "name": "DivByZero"
-                },
-                {
-                  "index": 1,
-                  "name": "MulOverFlow"
-                },
-                {
-                  "index": 2,
-                  "name": "AddOverFlow"
-                },
-                {
-                  "index": 3,
-                  "name": "SubOverFlow"
-                }
-              ]
-            }
-          },
-          "path": [
-            "lucky",
-            "traits",
-            "random_generator",
-            "RandomGeneratorError"
-          ]
-        }
-      },
-      {
         "id": 20,
         "type": {
           "def": {
@@ -1226,7 +959,7 @@
                 {
                   "fields": [
                     {
-                      "type": 11
+                      "type": 13
                     }
                   ],
                   "index": 0,
@@ -1235,7 +968,7 @@
                 {
                   "fields": [
                     {
-                      "type": 17
+                      "type": 18
                     }
                   ],
                   "index": 1,
@@ -1247,11 +980,11 @@
           "params": [
             {
               "name": "T",
-              "type": 11
+              "type": 13
             },
             {
               "name": "E",
-              "type": 17
+              "type": 18
             }
           ],
           "path": [
@@ -1268,7 +1001,7 @@
                 {
                   "fields": [
                     {
-                      "type": 11
+                      "type": 22
                     }
                   ],
                   "index": 0,
@@ -1277,7 +1010,7 @@
                 {
                   "fields": [
                     {
-                      "type": 16
+                      "type": 18
                     }
                   ],
                   "index": 1,
@@ -1289,11 +1022,11 @@
           "params": [
             {
               "name": "T",
-              "type": 11
+              "type": 22
             },
             {
               "name": "E",
-              "type": 16
+              "type": 18
             }
           ],
           "path": [
@@ -1305,8 +1038,83 @@
         "id": 22,
         "type": {
           "def": {
+            "variant": {
+              "variants": [
+                {
+                  "index": 0,
+                  "name": "None"
+                },
+                {
+                  "fields": [
+                    {
+                      "type": 4
+                    }
+                  ],
+                  "index": 1,
+                  "name": "Some"
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "T",
+              "type": 4
+            }
+          ],
+          "path": [
+            "Option"
+          ]
+        }
+      },
+      {
+        "id": 23,
+        "type": {
+          "def": {
             "primitive": "bool"
           }
+        }
+      },
+      {
+        "id": 24,
+        "type": {
+          "def": {
+            "variant": {
+              "variants": [
+                {
+                  "fields": [
+                    {
+                      "type": 13
+                    }
+                  ],
+                  "index": 0,
+                  "name": "Ok"
+                },
+                {
+                  "fields": [
+                    {
+                      "type": 19
+                    }
+                  ],
+                  "index": 1,
+                  "name": "Err"
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "T",
+              "type": 13
+            },
+            {
+              "name": "E",
+              "type": 19
+            }
+          ],
+          "path": [
+            "Result"
+          ]
         }
       }
     ]
