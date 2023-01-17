@@ -621,8 +621,6 @@ async function runAllEra() : Promise<void>{
         era = lastEraDone.valueOf() + 1;
     }
 
-    era = 2115;
-
     while (era < currentEra){
 
         console.log('----------------------------------------------------------------------------------');
