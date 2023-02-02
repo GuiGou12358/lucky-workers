@@ -11,7 +11,8 @@ import {Config} from './config';
 
 const argv = yargs(process.argv.slice(2)).options({
     ce: {alias: 'currentEra', desc: 'Display the current era for dApp staking'},
-    le: {alias: 'lastEra', desc: 'Display the last era when we ran the raffle'},
+    lrr: {alias: 'lastEraReceivedReward', desc: 'Display the last era when the dapp received rewards from dApp staking'},
+    lrd: {alias: 'lastEraRaffleDone', desc: 'Display the last era when the raffle has been run'},
     dc: {alias: 'displayConfiguration', desc: 'Diplay the configuration (contract and http addresses)'},
     ch: {alias: 'checks', desc: 'Check if the grants and the configuration in the smart contracts have been set'},
     cl: {alias: 'claim', desc: 'Claim dappStaking developer rewards for a given era - era is mandatory'},
@@ -336,6 +337,43 @@ async function claimDAppStaking(
     
 }
 
+
+async function getLastEraReceivedReward(): Promise<Number> {
+
+    console.log('----------------------------------------------------------------------------------');
+    console.log('Get last era when the dApp received the rewards ... ');
+
+    try {    
+        const body = { query : 'query {developerRewards(orderBy: ERA_DESC, first:1) {nodes {era}}}' };
+
+        console.log('POST %s', config.subqlUrl );
+        console.log(body);
+
+        const response = await fetch(config.subqlUrl, {
+            method: 'POST', 
+            headers: {
+                'Content-Type' : 'application/json',
+                'Accept' : 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+
+        console.log('Response status: %s', response.statusText);        
+        const data = await response.text();
+        console.log(data);
+
+        const era = JSON.parse(data).data.developerRewards.nodes[0].era;        
+        console.log('Last era when the dApp received the rewards: %s', era);
+        return era;
+
+    } catch(error) {
+        console.log("Error when getting last era when the dapp received some rewards : " + error);
+        return Promise.reject(error);
+    }
+
+}
+
+
 async function getRewards(
     era: Number
 ): Promise<BigInt> {
@@ -590,13 +628,13 @@ async function runRaffle(era: Number) : Promise<void>{
     console.log('Ok');
 }
 
-async function queryCurrentEra() : Promise<Number>{
+async function getCurrentEra() : Promise<Number>{
     const currentEra = (Number) ((await api.query.dappsStaking.currentEra()).toPrimitive());
     console.log('Current era for dApp staking: %s', currentEra);
     return currentEra;
 }
 
-async function queryLastEraRaffleDone() : Promise<Number>{
+async function getLastEraRaffleDone() : Promise<Number>{
        
     // maximum gas to be consumed for the call. if limit is too small the call will fail.
     const gasLimit: WeightV2 = api.registry.createType('WeightV2', 
@@ -660,16 +698,19 @@ async function run(era: Number) : Promise<void>{
 
 async function runAllEra() : Promise<void>{
 
-    const lastEraDone = await queryLastEraRaffleDone();
+    const lastEraReceivedReward = await getLastEraReceivedReward();
+    const lastEraRaffleDone = await getLastEraRaffleDone();
+    const currentEra = await getCurrentEra();
 
-    const currentEra = await queryCurrentEra();
-
-    let era: number;
-    if (lastEraDone == 0){
-        era = currentEra.valueOf() - 1;
-    } else {
-        era = lastEraDone.valueOf() + 1;
+    if (lastEraReceivedReward != lastEraRaffleDone){
+        return Promise.reject("There is a gap between the last era when the rewards have been received and when the last reffle done. Manual intervention is need.");
     }
+
+    if (lastEraRaffleDone == 0){
+        return Promise.reject("First iteration must be manual with setting explicitely teh era");
+    }
+
+    let era: number = lastEraRaffleDone.valueOf() + 1;
 
     while (era < currentEra){
 
@@ -694,7 +735,8 @@ async function runAllEra() : Promise<void>{
 
 async function runCommands() : Promise<void>{
 
-    if (!argv.displayConfiguration && !argv.lastEra && !argv.currentEra
+    if (!argv.displayConfiguration 
+        && !argv.currentEra && !argv.lastEraReceivedReward && !argv.lastEraRaffleDone
         && !argv.checks && !argv.claim && !argv.setOracle && !argv.raffle && !argv.all 
         ) {
         return Promise.reject('At least one option is required. Use --help for more information');
@@ -708,7 +750,7 @@ async function runCommands() : Promise<void>{
         displayConfiguration();
     }
 
-    if (argv.lastEra || argv.currentEra
+    if (argv.lastEraRaffleDone || argv.currentEra
         || argv.checks || argv.claim || argv.setOracle || argv.raffle || argv.all 
         ) {
         await initConnection();
@@ -719,13 +761,18 @@ async function runCommands() : Promise<void>{
         await checkRaffleConfiguration();
     }
 
-    if (argv.lastEra) {
-        await queryLastEraRaffleDone();
+    if (argv.currentEra) {
+        await getCurrentEra();
     }
 
-    if (argv.currentEra) {
-        await queryCurrentEra();
+    if (argv.lastEraReceivedReward) {
+        await getLastEraReceivedReward();
     }
+    
+    if (argv.lastEraRaffleDone) {
+        await getLastEraRaffleDone();
+    }
+
 
     if (argv.claim || argv.setOracle || argv.raffle || argv.all) {
 
