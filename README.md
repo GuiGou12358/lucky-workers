@@ -33,18 +33,29 @@ Last, under the project directory, run following command to install all the depe
 npx ts-node src/workers.ts [Options]
 ```
 
-Options:
 ```
-  --help                        Show help                          
-  --ce, --currentEra            Display the current era for dApp staking
-  --le, --lastEra               Display the last era when we ran the raffle
-  --dc, --displayConfiguration  Diplay the configuration (contract and http addresses)
-  --ch, --checks                Check if the grants and the configuration in the smart contracts have been set
-  --cl, --claim                 Claim dappStaking developer rewards for a given era - era is mandatory
-  --so, --setOracle             Set Oracle data for a given era - era is mandatory
-  -r, --raffle                  Start the raffle for a given era - era is mandatory
-  -a, --all                     Equivalent to --checks --claim --setOracle --raffle for a given era 
-                                    or for for all era (from --lastEra to --currentEra) if no era is provided
-  --era                         Given era                           
-  --version                     Show version number      
+Options:
+      --help                          Show help                        
+      --ce, --currentEra              Display the current era for dApp staking
+      --lrr, --lastEraReceivedReward  Display the last era when the dapp
+                                      received rewards from dApp staking
+      --lrd, --lastEraRaffleDone      Display the last era when the raffle has
+                                      been run
+      --dc, --displayConfiguration    Diplay the configuration (contract and
+                                      http addresses)
+      --ch, --checks                  Check if the grants and the configuration
+                                      in the smart contracts have been set
+      --cl, --claim                   Claim dappStaking developer rewards for a
+                                      given era - era is mandatory
+      --so, --setOracle               Set Oracle data for a given era - era is
+                                      mandatory
+  -r, --raffle                        Start the raffle for a given era - era is
+                                      mandatory
+  -a, --all                           Equivalent to --checks --claim --setOracle
+                                      --raffle for a given era or for for all
+                                      era (from --lastEra to --currentEra) if no
+                                      era is provided
+      --era                           Given era                         
+  -d, --debug                         Debug mode: display more information
+      --version                       Show version number             
 ```

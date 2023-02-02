@@ -20,6 +20,7 @@ const argv = yargs(process.argv.slice(2)).options({
     r:  {alias: 'raffle', desc: 'Start the raffle for a given era - era is mandatory'},
     a:  {alias: 'all', desc: 'Equivalent to --checks --claim --setOracle --raffle for a given era or for for all era (from --lastEra to --currentEra) if no era is provided'},
     era: {type: 'number', desc: 'Given era'},
+    d: {alias: 'debug', desc: 'Debug mode: display more information'},
 }).version('0.1').parseSync();
 
 const config = new Config();
@@ -81,10 +82,8 @@ async function initConnection(){
 
 async function checkGrants() : Promise<void>{
 
-    console.log('----------------------------------------------------------------------------------');
     console.log('Check grants ... ');
   
-
     // maximum gas to be consumed for the call. if limit is too small the call will fail.
     const gasLimit: WeightV2 = api.registry.createType('WeightV2', 
         {refTime: 6219235328, proofSize: 131072}
@@ -160,10 +159,8 @@ async function checkGrants() : Promise<void>{
 
 async function checkRaffleConfiguration() : Promise<void>{
 
-    console.log('----------------------------------------------------------------------------------');
     console.log('Check Raffle Configuration ... ');
   
-
     // maximum gas to be consumed for the call. if limit is too small the call will fail.
     const gasLimit: WeightV2 = api.registry.createType('WeightV2', 
         {refTime: 6219235328, proofSize: 131072}
@@ -268,12 +265,17 @@ function readResult(result: ISubmittableResult, extrinsicResult: ExtrinsicResult
             let data = event.data;
             let method = event.method;
             let section = event.section;
-            console.log(' %s : %s.%s:: %s', phase, section, method, data);
+            if (argv.debug){
+                console.log(' %s : %s.%s:: %s', phase, section, method, data);
+            }
             if (section == 'system' && method == 'ExtrinsicSuccess'){
                 extrinsicResult.success = true;
                 return true;
             } else if (section == 'system' && method == 'ExtrinsicFailed'){
                 extrinsicResult.failed = true;
+                if (!argv.debug){
+                    console.log(' %s : %s.%s:: %s', phase, section, method, data);
+                }
                 /*                
                 console.log(data.toHuman());
                 const [accountId, contractEvent] = data;      
@@ -299,7 +301,6 @@ async function claimDAppStaking(
     era: Number
 ) : Promise<void>{
 
-    console.log('----------------------------------------------------------------------------------');
     console.log('Claim dApp Staking ...');
 
     // maximum gas to be consumed for the call. if limit is too small the call will fail.
@@ -333,21 +334,22 @@ async function claimDAppStaking(
         return Promise.reject("ERROR: Extrinsic failed when claiming dAppStaking for era " + era);
     }
 
-    console.log('Ok');
+    console.log('Claim dApp Staking  Ok');
     
 }
 
 
 async function getLastEraReceivedReward(): Promise<Number> {
 
-    console.log('----------------------------------------------------------------------------------');
     console.log('Get last era when the dApp received the rewards ... ');
 
     try {    
         const body = { query : 'query {developerRewards(orderBy: ERA_DESC, first:1) {nodes {era}}}' };
 
-        console.log('POST %s', config.subqlUrl );
-        console.log(body);
+        if (argv.debug){
+            console.log('POST %s', config.subqlUrl );
+            console.log(body);
+        }
 
         const response = await fetch(config.subqlUrl, {
             method: 'POST', 
@@ -358,16 +360,22 @@ async function getLastEraReceivedReward(): Promise<Number> {
             body: JSON.stringify(body)
         });
 
-        console.log('Response status: %s', response.statusText);        
+        if (argv.debug){
+            console.log('Response status: %s', response.statusText);
+        }        
+
         const data = await response.text();
-        console.log(data);
+
+        if (argv.debug){
+            console.log(data);
+        }
 
         const era = JSON.parse(data).data.developerRewards.nodes[0].era;        
         console.log('Last era when the dApp received the rewards: %s', era);
         return era;
 
     } catch(error) {
-        console.log("Error when getting last era when the dapp received some rewards : " + error);
+        console.log("Error when getting last era when the dapp received some rewards : %s", error);
         return Promise.reject(error);
     }
 
@@ -378,14 +386,15 @@ async function getRewards(
     era: Number
 ): Promise<BigInt> {
 
-    console.log('----------------------------------------------------------------------------------');
-    console.log('Get Rewards ... ');
+    console.log('Get rewards for era %s in the indexer ...', era);
 
     try {    
         const body = { query : 'query {developerRewards(filter: { era: { equalTo: \"' + era + '\" } }) {nodes {amount, era}}}' };
 
-        console.log('POST %s', config.subqlUrl );
-        console.log(body);
+        if (argv.debug){
+            console.log('POST %s', config.subqlUrl );
+            console.log(body);
+        }
 
         const response = await fetch(config.subqlUrl, {
             method: 'POST', 
@@ -396,17 +405,23 @@ async function getRewards(
             body: JSON.stringify(body)
         });
 
-        console.log('Response status: %s', response.statusText);        
+        if (argv.debug){
+            console.log('Response status: %s', response.statusText);        
+        }
+
         const data = await response.text();
-        console.log(data);
+
+        if (argv.debug){
+            console.log(data);
+        }
 
         const rewards = JSON.parse(data).data.developerRewards.nodes[0].amount;
-        console.log('OK, Rewards: %s', rewards);
+        console.log('Rewards: %s', rewards);
         
         return BigInt(rewards);
 
     } catch(error) {
-        console.log("Error when getting rewards : " + error);
+        console.log("Error when getting rewards: %s", error);
         return Promise.reject(error);
     }
 
@@ -426,14 +441,15 @@ async function getParticipants(
     era: Number
 ): Promise<Participant[]> {
 
-    console.log('----------------------------------------------------------------------------------');
-    console.log('Get Participants ... ');
+    console.log('Get participants for era %s in the indexer ...', era);
 
     try {    
         const body = { query : 'query {stakes(filter: { era: { lessThanOrEqualTo: \"' + era + '\" }}) {groupedAggregates(groupBy: [ACCOUNT_ID], having: { sum: { amount: { notEqualTo: "0" }}}) { sum{amount}, keys }}}' };
 
-        console.log('POST %s', config.subqlUrl );
-        console.log(body);
+        if (argv.debug){
+            console.log('POST %s', config.subqlUrl );
+            console.log(body);
+        }
 
         const response = await fetch(config.subqlUrl, {
             method: 'POST', 
@@ -444,9 +460,15 @@ async function getParticipants(
             body: JSON.stringify(body)
         });
 
-        console.log('Response status: %s', response.statusText);        
+        if (argv.debug){
+            console.log('Response status: %s', response.statusText);        
+        }
+
         const data = await response.text();
-        console.log(data);
+        
+        if (argv.debug){
+            console.log(data);
+        }
 
         var participants: Participant[] = [];
 
@@ -455,22 +477,25 @@ async function getParticipants(
         for(let i=0; i<participantsQueryResult.length; i++){
 
             const address = participantsQueryResult[i].keys[0];
-            console.log('address: %s', address);
 
-            console.log('stake: %s', participantsQueryResult[i].sum);
+            if (argv.debug){
+                console.log('address: %s', address);
+                console.log('stake: %s', participantsQueryResult[i].sum);
+            }
 
+            // Fixme
             //const stake = BigInt(participantsQueryResult[i].sum.amount);
             const stake = BigInt(10);            
-            console.log('stake: %s', stake.valueOf());
+            //console.log('stake: %s', stake.valueOf());
             
             participants.push({address, stake});
         }
         
-        console.log('Ok');
+        console.log('Number of participants: %s', participants.length);
         return participants;
 
     } catch(error) {
-        console.log("Error when getting participants : " + error);
+        console.log("Error when getting participants: %s", error);
         return Promise.reject(error);
     }
 }
@@ -480,8 +505,7 @@ async function setRewards(
     value: BigInt
 ) : Promise<void>{
 
-    console.log('----------------------------------------------------------------------------------');
-    console.log('Set rewards ... ');
+    console.log('Set the rewards for era %s in the Oracle ... ', era);
 
     // maximum gas to be consumed for the call. if limit is too small the call will fail.
     const gasLimit: WeightV2 = api.registry.createType('WeightV2', 
@@ -518,7 +542,7 @@ async function setRewards(
     if (extrinsicResult.failed){
         return Promise.reject("ERROR: Extrinsic failed when setting rewards for era " + era);
     }
-    console.log('Ok');
+    console.log('Rewards set in the Oracle');
 }
 
 async function setParticipants(
@@ -526,11 +550,9 @@ async function setParticipants(
     participants: Participant[],
 ) : Promise<void>{
 
-    console.log('----------------------------------------------------------------------------------');
-    console.log('Set participants ...');
+    console.log('Set the participants for era %s in the Oracle ... ', era);
 
     if  (participants.length == 0) {
-        console.log("ERROR: There is no participant for era %s", era);
         return Promise.reject("ERROR: There is no participant for era " + era);
     }
 
@@ -571,13 +593,12 @@ async function setParticipants(
     if (extrinsicResult.failed){
         return Promise.reject("ERROR: Extrinsic failed when setting participants for era " + era);
     }
-    console.log('Ok');
+    console.log('Participants set in the Oracle');
 }
 
 async function runRaffle(era: Number) : Promise<void>{
 
-    console.log('----------------------------------------------------------------------------------');
-    console.log('Run Raffle ...');
+    console.log('Run raffle for era %s', era);
     
     // maximum gas to be consumed for the call. if limit is too small the call will fail.
     const gasLimit: WeightV2 = api.registry.createType('WeightV2', 
@@ -590,16 +611,20 @@ async function runRaffle(era: Number) : Promise<void>{
      const {gasRequired, storageDeposit, result, output, debugMessage} = await luckyRaffleContract.query
         .runRaffle(worker.address, {storageDepositLimit, gasLimit}, era);
 
-    console.log('result : %s', result.toHuman());
-    console.log('output : %s', output?.toHuman());
-    console.log('debugMessage : %s', debugMessage.toHuman());
-    console.log('gasRequired : %s - storageDeposit : %s', gasRequired.toHuman(), storageDeposit.toHuman());
+    if (argv.debug){
+        console.log('result : %s', result.toHuman());
+        console.log('output : %s', output?.toHuman());
+        console.log('debugMessage : %s', debugMessage.toHuman());
+        console.log('gasRequired : %s - storageDeposit : %s', gasRequired.toHuman(), storageDeposit.toHuman());
+    }
         
     if (result.isErr){
+        console.log('result : %s', result.toHuman());
         return Promise.reject("ERROR when dry run the raffle for era " + era);
     }
 
     if (output != null){
+        console.log('output : %s', output?.toHuman());
         return Promise.reject("ERROR when dry run the raffle for era " + era);
     }
 
@@ -625,7 +650,7 @@ async function runRaffle(era: Number) : Promise<void>{
     if (extrinsicResult.failed){
         return Promise.reject("ERROR: Extrinsic failed when running raffle for era " + era);
     }
-    console.log('Ok');
+    console.log('Raffle done');
 }
 
 async function getCurrentEra() : Promise<Number>{
@@ -707,15 +732,12 @@ async function runAllEra() : Promise<void>{
     }
 
     if (lastEraRaffleDone == 0){
-        return Promise.reject("First iteration must be manual with setting explicitely teh era");
+        return Promise.reject("First iteration must be manual with setting explicitely the era");
     }
 
     let era: number = lastEraRaffleDone.valueOf() + 1;
 
     while (era < currentEra){
-
-        console.log('----------------------------------------------------------------------------------');
-        console.log("                     Start raffle for era %s", era);
 
         await run(era).then( 
             () => {
@@ -724,7 +746,6 @@ async function runAllEra() : Promise<void>{
             }
         ).catch( (error) => {
             console.log("Raffle failed for era %s", era);
-            console.log(error);
             return Promise.reject(error);
         });
 
