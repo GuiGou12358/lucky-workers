@@ -30,12 +30,12 @@ export class Config {
     // shiden: 
     // astar: 
     luckyRaffleContractAddress = 'XACoUtf3a5bjNPvKPYxgw5fpEnPkxK6TqRDGgRueo9Zyez1';    
-   
+      
 
     subqlUrl = 'http://localhost:3000/';
 
     /* IT'S STRONGLY RECOMMENDED TO USE A PROXY */
-    worker_seed = 'seed words for your staker account that you will store in server'; 
+    worker_seed = 'element garage roast warfare annual success comic below spot axis yard audit'; 
      
    }
    

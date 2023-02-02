@@ -5,9 +5,21 @@ import type { ISubmittableResult} from '@polkadot/types/types';
 import { Balance, WeightV2 } from '@polkadot/types/interfaces';
 import { setTimeout } from 'timers/promises';
 import { readFileSync } from 'fs';
+import yargs from 'yargs/yargs';
 import fetch from 'node-fetch';
 import {Config} from './config';
 
+const argv = yargs(process.argv.slice(2)).options({
+    ce: {alias: 'currentEra', desc: 'Display the current era for dApp staking'},
+    le: {alias: 'lastEra', desc: 'Display the last era when we ran the raffle'},
+    dc: {alias: 'displayConfiguration', desc: 'Diplay the configuration (contract and http addresses)'},
+    ch: {alias: 'checks', desc: 'Check if the grants and the configuration in the smart contracts have been set'},
+    cl: {alias: 'claim', desc: 'Claim dappStaking developer rewards for a given era - era is mandatory'},
+    so: {alias: 'setOracle', desc: 'Set Oracle data for a given era - era is mandatory'},
+    r:  {alias: 'raffle', desc: 'Start the raffle for a given era - era is mandatory'},
+    a:  {alias: 'all', desc: 'Equivalent to --checks --claim --setOracle --raffle for a given era or for for all era (from --lastEra to --currentEra) if no era is provided'},
+    era: {type: 'number', desc: 'Given era'},
+}).version('0.1').parseSync();
 
 const config = new Config();
 
@@ -32,10 +44,19 @@ const luckyRaffleContractAddress = config.luckyRaffleContractAddress;
 const luckyRaffleContractMetadata = readFileSync('./metadata/lucky_raffle_metadata.json');
 let luckyRaffleContract : ContractPromise;
 
+async function displayConfiguration(){
+    console.log('RPC: %s', config.rpc);
+    console.log('dAppStaking application contract address: %s', dAppStakingApplicationContractAddress);
+    console.log('dAppStaking developer contract address: %s', config.dAppStakingDeveloperContractAddress);
+    console.log('lucky oracle contract address: %s', luckyOracleContractAddress);
+    console.log('reward manager contract address: %s', rewardManagerContractAddress);
+    console.log('raffle contract address: %s', luckyRaffleContractAddress);
+    console.log('subQL url: %s', config.subqlUrl);
+}
 
 async function initConnection(){
 
-    const wsProvider = new WsProvider('wss://rpc.shibuya.astar.network');
+    const wsProvider = new WsProvider(config.rpc);
     api = await ApiPromise.create({ provider: wsProvider});
 
     const[chain, nodeName, nodeVersion] = await Promise.all([
@@ -132,7 +153,7 @@ async function checkGrants() : Promise<void>{
         return Promise.reject("ERROR when query luckyRaffleContract.accessControl::hasRole " + hasRoleRaffleManager.result.asErr);
     }
     
-    console.log('Ok');
+    console.log('Check grants Ok');
 }
 
 
@@ -220,7 +241,7 @@ async function checkRaffleConfiguration() : Promise<void>{
         return Promise.reject('ERROR when query getRatioDistribution ' + getRatioDistributionOutcome.result.asErr);
     }
 
-    console.log('Ok');
+    console.log('Check configuration Ok');
 }
 
 
@@ -241,20 +262,28 @@ function readResult(result: ISubmittableResult, extrinsicResult: ExtrinsicResult
         console.log('Transaction hash ', result.txHash.toHex());
         extrinsicResult.finalized = result.status.isFinalized;
 
-        result.events.forEach(({ phase, event : {data, method, section}} ) => {
+        //result.events.forEach(({ phase, event : {data, method, section}} ) => {
+        result.events.forEach(({ phase, event} ) => {
+            let data = event.data;
+            let method = event.method;
+            let section = event.section;
             console.log(' %s : %s.%s:: %s', phase, section, method, data);
             if (section == 'system' && method == 'ExtrinsicSuccess'){
                 extrinsicResult.success = true;
                 return true;
             } else if (section == 'system' && method == 'ExtrinsicFailed'){
                 extrinsicResult.failed = true;
+                /*                
+                console.log(data.toHuman());
+                const [accountId, contractEvent] = data;      
+                console.log(contractEvent.toHuman());
+                */
                 return true;
-            }/* 
-            else if (section == 'contracts' && method == 'ContractEmitted'){
+            } /*else if (section == 'contracts' && method == 'ContractEmitted'){
                 const [accountId, contractEvent] = data;
                 const decodedEvent = new Abi(luckyRaffleContractMetadata.toString()).decodeEvent(contractEvent.toU8a()); 
                 console.log('Contract Emmitted event = ' + decodedEvent)
-            } */
+            }*/
         });
     } else if (result.isError){
         console.log('Error');
@@ -449,7 +478,7 @@ async function setRewards(
     } while (!extrinsicResult.failed && !extrinsicResult.finalized);
 
     if (extrinsicResult.failed){
-        return Promise.reject("ERROR: Extrinsic failed when claiming dAppStaking for era " + era);
+        return Promise.reject("ERROR: Extrinsic failed when setting rewards for era " + era);
     }
     console.log('Ok');
 }
@@ -502,7 +531,7 @@ async function setParticipants(
     } while (!extrinsicResult.failed && !extrinsicResult.finalized);
 
     if (extrinsicResult.failed){
-        return Promise.reject("ERROR: Extrinsic failed when claiming dAppStaking for era " + era);
+        return Promise.reject("ERROR: Extrinsic failed when setting participants for era " + era);
     }
     console.log('Ok');
 }
@@ -520,10 +549,26 @@ async function runRaffle(era: Number) : Promise<void>{
     // if null is passed, unlimited balance can be used
     const storageDepositLimit = null;
 
+     const {gasRequired, storageDeposit, result, output, debugMessage} = await luckyRaffleContract.query
+        .runRaffle(worker.address, {storageDepositLimit, gasLimit}, era);
+
+    console.log('result : %s', result.toHuman());
+    console.log('output : %s', output?.toHuman());
+    console.log('debugMessage : %s', debugMessage.toHuman());
+    console.log('gasRequired : %s - storageDeposit : %s', gasRequired.toHuman(), storageDeposit.toHuman());
+        
+    if (result.isErr){
+        return Promise.reject("ERROR when dry run the raffle for era " + era);
+    }
+
+    if (output != null){
+        return Promise.reject("ERROR when dry run the raffle for era " + era);
+    }
+
     let extrinsicResult : ExtrinsicResult = {success: false, failed: false, finalized: false }; 
 
     const unsub = await luckyRaffleContract.tx
-        .runRaffle({ storageDepositLimit, gasLimit }, era)
+        .runRaffle({ storageDepositLimit, gasLimit: gasRequired }, era)
         .signAndSend(
             worker, 
             (result) => {
@@ -540,17 +585,19 @@ async function runRaffle(era: Number) : Promise<void>{
     } while (!extrinsicResult.failed && !extrinsicResult.finalized);
 
     if (extrinsicResult.failed){
-        return Promise.reject("ERROR: Extrinsic failed when claiming dAppStaking for era " + era);
+        return Promise.reject("ERROR: Extrinsic failed when running raffle for era " + era);
     }
     console.log('Ok');
 }
 
+async function queryCurrentEra() : Promise<Number>{
+    const currentEra = (Number) ((await api.query.dappsStaking.currentEra()).toPrimitive());
+    console.log('Current era for dApp staking: %s', currentEra);
+    return currentEra;
+}
 
-async function getEraLastRaffleDone() : Promise<Number>{
-
-    console.log('----------------------------------------------------------------------------------');
-    console.log('Get era for the last raffle done ... ');
-        
+async function queryLastEraRaffleDone() : Promise<Number>{
+       
     // maximum gas to be consumed for the call. if limit is too small the call will fail.
     const gasLimit: WeightV2 = api.registry.createType('WeightV2', 
         {refTime: 6219235328, proofSize: 131072}
@@ -563,60 +610,63 @@ async function getEraLastRaffleDone() : Promise<Number>{
     const {result, output} = await luckyRaffleContract.query['raffle::getLastEraDone'](worker.address, {gasLimit, storageDepositLimit});
 
     if (result.isOk){
-        return (Number) (output?.toPrimitive());
+        const era = (Number) (output?.toPrimitive());
+        console.log('Last era when we run the raffle: %s', era);
+        return era;
     }
     return Promise.reject("ERROR when query raffle::getLastEraDone " + result.asErr);
 }
 
 
+async function start(era: Number) : Promise<void>{
+    console.log("Start era %s", era);
+}
+
+
 async function run(era: Number) : Promise<void>{
-               
-    return claimDAppStaking(era).then(
-        () => getRewards(era).catch(
-            () => setTimeout(30000)
+             
+    let promise = start(era);
+
+    if (argv.claim || argv.all){
+        promise = promise.then(() => claimDAppStaking(era));
+    }
+
+    if (argv.setOracle || argv.all){
+        promise = promise.then(() => 
+            getRewards(era).catch(
+                () => setTimeout(30000)
                 .then(() => getRewards(era))
-                .catch(
+                .catch( 
                     () => setTimeout(30000)
                     .then( () => getRewards(era))
                 )
-            )// try it 3 times
-    ).then (
-        (rewards) => setRewards(era, rewards)
-    ).then (
-        () => getParticipants(era)
-    ).then (
-        (participants) => setParticipants(era, participants)
-    ).then (
-        () => runRaffle(era).catch(
-            () => setTimeout(30000)
-                .then(() => runRaffle(era))
-                .catch(
-                    () => setTimeout(30000)
-                    .then( () => runRaffle(era))
-                )
-            )// try it 3 times
-    ).then (
-    );
+            ) // try it 3 times because it can be a while for indexing data 
+        ).then (
+            (rewards) => setRewards(era, rewards)
+        ).then (
+            () => getParticipants(era)
+        ).then (
+            (participants) => setParticipants(era, participants)
+        );
+    }
 
+    if (argv.raffle || argv.all){
+        promise = promise.then(() => runRaffle(era));
+    }
+
+    return promise.then(() => console.log("End era %s", era) );
 }
+
 
 async function runAllEra() : Promise<void>{
 
-    await initConnection();
+    const lastEraDone = await queryLastEraRaffleDone();
 
-    await checkGrants();
-
-    await checkRaffleConfiguration();
-
-    const lastEraDone = await getEraLastRaffleDone();
-    console.log('Last era when we run the raffle: %s', lastEraDone);
-
-    const currentEra = (Number) ((await api.query.dappsStaking.currentEra()).toPrimitive());
-    console.log('Current era for dApp staking: %s', currentEra);
+    const currentEra = await queryCurrentEra();
 
     let era: number;
     if (lastEraDone == 0){
-        era = currentEra - 1;
+        era = currentEra.valueOf() - 1;
     } else {
         era = lastEraDone.valueOf() + 1;
     }
@@ -641,4 +691,54 @@ async function runAllEra() : Promise<void>{
 }
 
 
-runAllEra().catch(console.error).finally(() => process.exit());
+
+async function runCommands() : Promise<void>{
+
+    if (!argv.displayConfiguration && !argv.lastEra && !argv.currentEra
+        && !argv.checks && !argv.claim && !argv.setOracle && !argv.raffle && !argv.all 
+        ) {
+        return Promise.reject('At least one option is required. Use --help for more information');
+    }
+
+    if ((argv.claim || argv.setOracle || argv.raffle) && argv.era == undefined) {
+        return Promise.reject('A given era is required for options --claim --setOracle --raffle. Use --help for more information');
+    }
+
+    if (argv.displayConfiguration) {
+        displayConfiguration();
+    }
+
+    if (argv.lastEra || argv.currentEra
+        || argv.checks || argv.claim || argv.setOracle || argv.raffle || argv.all 
+        ) {
+        await initConnection();
+    }
+    
+    if (argv.checks || argv.all) {
+        await checkGrants();
+        await checkRaffleConfiguration();
+    }
+
+    if (argv.lastEra) {
+        await queryLastEraRaffleDone();
+    }
+
+    if (argv.currentEra) {
+        await queryCurrentEra();
+    }
+
+    if (argv.claim || argv.setOracle || argv.raffle || argv.all) {
+
+        if (argv.era == undefined) {
+            await runAllEra();
+        } else {
+            await run(argv.era);
+        }
+
+    }
+}
+
+
+runCommands().catch(console.error).finally(() => process.exit());
+
+
