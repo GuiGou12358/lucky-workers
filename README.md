@@ -34,6 +34,7 @@ npx ts-node src/workers.ts [Options]
 ```
 
 Options:
+```
       --help                        Show help                          
       --ce, --currentEra            Display the current era for dApp staking
       --le, --lastEra               Display the last era when we ran the raffle
@@ -46,3 +47,4 @@ Options:
                                        or for for all era (from --lastEra to --currentEra) if no era is provided
       --era                         Given era                           
       --version                     Show version number      
+```
