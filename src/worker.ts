@@ -1,7 +1,7 @@
 import { setTimeout } from 'timers/promises';
 import { getCurrentEra, claimDAppStaking } from './dAppStaking';
 import { getLastEraReceivedReward, getRewards, getParticipants } from './queryIndexer';
-import { setParticipants, setRewards } from './oracle';
+import { setParticipants, setRewards, clearData } from './oracle';
 import { getLastEraRaffleDone, runRaffle } from './raffle';
 
 
@@ -14,7 +14,8 @@ export async function runEra(
     claimDappStaking: boolean, 
     queryIndexer: boolean, 
     setOracleData: boolean, 
-    raffle: boolean
+    raffle: boolean,
+    clearOracleData: boolean
 ) : Promise<void>{
              
     let promise: Promise<any> = start(era);
@@ -51,6 +52,11 @@ export async function runEra(
         promise = promise.then(() => runRaffle(era));
     }
 
+    if (clearOracleData){
+        promise = promise.then(() => clearData(era));
+    }
+
+
     return promise.then(() => console.log("End era %s", era) );
 }
 
@@ -73,7 +79,7 @@ export async function runNextEras() : Promise<void>{
 
     while (era < currentEra){
 
-        await runEra(era, true, true, true, true).then( 
+        await runEra(era, true, true, true, true, true).then( 
             () => {
                 console.log("Raffle succesfully run for era %s", era);
                 era += 1;

@@ -44,16 +44,20 @@ export async function checkRaffleConfiguration() : Promise<void>{
     ]);
 
     if (getDappsStakingDeveloperAddressOutcome.result.isOk){
-        const address = getDappsStakingDeveloperAddressOutcome.output?.toPrimitive()?.toString();
+        const output : string = getDappsStakingDeveloperAddressOutcome.output?.toString() ?? '';
+        const address = JSON.parse(output).ok;
+        console.log('DAppStakingDeveloperContractAddress: %s', address);
         if (address != dAppStakingDeveloperContractAddress){
-            return Promise.reject('ERROR: ddAppStakingDeveloperContractAddress set in the raffle contract is not the same : ' + address + ' <> ' + dAppStakingDeveloperContractAddress);
+            return Promise.reject('ERROR: dAppStakingDeveloperContractAddress set in the raffle contract is not the same : ' + address + ' <> ' + dAppStakingDeveloperContractAddress);
         }
     } else {
         return Promise.reject('ERROR when query getDappsStakingDeveloperAddress ' + getDappsStakingDeveloperAddressOutcome.result.asErr);
     }
 
     if (getLuckyOracleAddressOutcome.result.isOk){
-        const address = getLuckyOracleAddressOutcome.output?.toPrimitive()?.toString();
+        const output : string = getLuckyOracleAddressOutcome.output?.toString() ?? '';
+        const address = JSON.parse(output).ok;
+        console.log('LuckyOracleAddress: %s', address);
         if (address != luckyOracleContractAddress){
             return Promise.reject('ERROR: luckyOracleAddress set in the raffle contract is not the same : ' + address + ' <> ' + luckyOracleContractAddress);
         }
@@ -62,7 +66,9 @@ export async function checkRaffleConfiguration() : Promise<void>{
     }
 
     if (getRewardManagerAddressOutcome.result.isOk){
-        const address = getRewardManagerAddressOutcome.output?.toPrimitive()?.toString();
+        const output : string = getRewardManagerAddressOutcome.output?.toString() ?? '';
+        const address = JSON.parse(output).ok;
+        console.log('RewardManagerContractAddress: %s', address);
         if (address != rewardManagerContractAddress){
             return Promise.reject('ERROR: rewardManagerContractAddress set in the raffle contract is not the same : ' + address + ' <> ' + rewardManagerContractAddress);
         }
@@ -71,7 +77,9 @@ export async function checkRaffleConfiguration() : Promise<void>{
     }
 
     if (getTotalRatioDistributionOutcome.result.isOk){
-        const value = (Number) (getTotalRatioDistributionOutcome.output?.toPrimitive()?.valueOf());
+        const output : string = getTotalRatioDistributionOutcome.output?.toString() ?? '';
+        const value = JSON.parse(output).ok;
+        console.log('Total ratio distribution: %s', value);
         if (value <= 0){
             return Promise.reject('ERROR: totalRatioDistribution is not set in the raffle contract : ' + value);
         }
@@ -80,7 +88,9 @@ export async function checkRaffleConfiguration() : Promise<void>{
     }
     
     if (getRatioDistributionOutcome.result.isOk){
-        const value = (getRatioDistributionOutcome.output?.toPrimitive()?.valueOf()) as Array<Number>;
+        const output : string = getRatioDistributionOutcome.output?.toString() ?? '';
+        const value = JSON.parse(output).ok as Array<Number>;
+        console.log('Ratio distribution: %s', value);
         if (value == null || value.length == 0){
             return Promise.reject('ERROR: ratioDistribution is not set in the raffle contract : ' + value);
         }

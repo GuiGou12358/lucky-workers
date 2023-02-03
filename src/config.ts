@@ -6,30 +6,30 @@ class Config {
     // astar: 
     rpc = 'wss://rpc.shibuya.astar.network';
 
-    // shibuya: bc3yCAej7WxPBi4x1Ba1zru9HtieZrW7jk15QmGWSwZ7D6G
+    // shibuya: bfH3CKzo3yDNDgo7EVD3uTFnoAj5fDY9NyCMpZg23VJfhNW
     // shiden: 
     // astar: 
-    dAppStakingApplicationContractAddress = 'bc3yCAej7WxPBi4x1Ba1zru9HtieZrW7jk15QmGWSwZ7D6G';
+    dAppStakingApplicationContractAddress = 'bfH3CKzo3yDNDgo7EVD3uTFnoAj5fDY9NyCMpZg23VJfhNW';
 
-    // shibuya: bgs2XegEVdJa1dgVmBichw9mLRkfrJRgnV6YX4LESGF6CJz
+    // shibuya: ZowLuDSzzxNMsVT6Ys3yRQ92p4WWUv8TVcowB2QTpg172cg
     // shiden: 
     // astar: 
-    dAppStakingDeveloperContractAddress = 'bgs2XegEVdJa1dgVmBichw9mLRkfrJRgnV6YX4LESGF6CJz';
+    dAppStakingDeveloperContractAddress = 'ZowLuDSzzxNMsVT6Ys3yRQ92p4WWUv8TVcowB2QTpg172cg';
 
-    // shibuya: WcSwaf6V3BJEUDqMS3XmPvWg6fr2feQyCyPE7d3uybmTc9g
+    // shibuya: Ydzxdwjp1RHtuKmKbxr98qaKgjfnDtfGURaeYZP3ZdbpSXE
     // shiden: 
     // astar: 
-    luckyOracleContractAddress = 'WcSwaf6V3BJEUDqMS3XmPvWg6fr2feQyCyPE7d3uybmTc9g';
+    luckyOracleContractAddress = 'Ydzxdwjp1RHtuKmKbxr98qaKgjfnDtfGURaeYZP3ZdbpSXE';
 
-    // shibuya: ba7rMagiHkAYAyr8DAuMQAAkhnabPmsLEVfiJvUifxNajz9
+    // shibuya: W66fXdDBkcp7RkZmsS7qLLpjdHB4FDSqWgJArbvCYG3PQ48
     // shiden: 
     // astar: 
-    rewardManagerContractAddress = 'ba7rMagiHkAYAyr8DAuMQAAkhnabPmsLEVfiJvUifxNajz9';
+    rewardManagerContractAddress = 'W66fXdDBkcp7RkZmsS7qLLpjdHB4FDSqWgJArbvCYG3PQ48';
 
-    // shibuya: XACoUtf3a5bjNPvKPYxgw5fpEnPkxK6TqRDGgRueo9Zyez1
+    // shibuya: X7Rxmt4JshNbZ9uEujXhAKkZBNSmpJwvZGPExCHpt6ebmCe
     // shiden: 
     // astar: 
-    luckyRaffleContractAddress = 'XACoUtf3a5bjNPvKPYxgw5fpEnPkxK6TqRDGgRueo9Zyez1';    
+    luckyRaffleContractAddress = 'X7Rxmt4JshNbZ9uEujXhAKkZBNSmpJwvZGPExCHpt6ebmCe';    
       
 
     subqlUrl = 'http://localhost:3000/';

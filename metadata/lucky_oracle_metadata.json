@@ -1,8 +1,17 @@
 {
   "source": {
-    "hash": "0x86987023fafc02946e701d212dea9cb2ebce7118aa3468cd9bc7b8d41eda72ee",
-    "language": "ink! 3.4.0",
-    "compiler": "rustc 1.65.0-nightly"
+    "hash": "0x51a65cb15285779f998888131c935babd47521123f240563682722655c9197b4",
+    "language": "ink! 4.0.0-beta",
+    "compiler": "rustc 1.65.0-nightly",
+    "build_info": {
+      "build_mode": "Debug",
+      "cargo_contract_version": "2.0.0-rc",
+      "rust_toolchain": "nightly-x86_64-unknown-linux-gnu",
+      "wasm_opt_settings": {
+        "keep_debug_symbols": false,
+        "optimization_passes": "Z"
+      }
+    }
   },
   "contract": {
     "name": "lucky_oracle",
@@ -11,1059 +20,1281 @@
       "guigou"
     ]
   },
-  "V3": {
-    "spec": {
-      "constructors": [
-        {
-          "args": [],
-          "docs": [],
-          "label": "new",
-          "payable": false,
-          "selector": "0x9bae9d5e"
-        }
-      ],
-      "docs": [],
-      "events": [],
-      "messages": [
-        {
-          "args": [
-            {
-              "label": "new_code_hash",
-              "type": {
-                "displayName": [],
-                "type": 3
-              }
-            }
+  "spec": {
+    "constructors": [
+      {
+        "args": [],
+        "docs": [],
+        "label": "new",
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink_primitives",
+            "ConstructorResult"
           ],
-          "docs": [],
-          "label": "upgrade_contract",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "Result"
-            ],
-            "type": 18
-          },
-          "selector": "0x1345543d"
+          "type": 8
         },
-        {
-          "args": [],
-          "docs": [],
-          "label": "get_role_oracle_data_manager",
-          "mutates": false,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "RoleType"
-            ],
-            "type": 5
-          },
-          "selector": "0x0af3569d"
-        },
-        {
-          "args": [
-            {
-              "label": "era",
-              "type": {
-                "displayName": [
-                  "oracledataconsumer_external",
-                  "GetDataInput1"
-                ],
-                "type": 5
-              }
-            }
-          ],
-          "docs": [
-            " return the data for a given era"
-          ],
-          "label": "OracleDataConsumer::get_data",
-          "mutates": false,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "oracledataconsumer_external",
-              "GetDataOutput"
-            ],
-            "type": 21
-          },
-          "selector": "0xb304a07d"
-        },
-        {
-          "args": [
-            {
-              "label": "era",
-              "type": {
-                "displayName": [
-                  "oracledatamanager_external",
-                  "SetRewardsInput1"
-                ],
-                "type": 5
-              }
-            },
-            {
-              "label": "reward",
-              "type": {
-                "displayName": [
-                  "oracledatamanager_external",
-                  "SetRewardsInput2"
-                ],
-                "type": 6
-              }
-            }
-          ],
-          "docs": [
-            " Set the rewards to share between participants"
-          ],
-          "label": "OracleDataManager::set_rewards",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "oracledatamanager_external",
-              "SetRewardsOutput"
-            ],
-            "type": 24
-          },
-          "selector": "0xca41eda6"
-        },
-        {
-          "args": [
-            {
-              "label": "era",
-              "type": {
-                "displayName": [
-                  "oracledatamanager_external",
-                  "AddParticipantsInput1"
-                ],
-                "type": 5
-              }
-            },
-            {
-              "label": "participants",
-              "type": {
-                "displayName": [
-                  "oracledatamanager_external",
-                  "AddParticipantsInput2"
-                ],
-                "type": 22
-              }
-            }
-          ],
-          "docs": [
-            " add participants in the raffle for a given era",
-            " a participant with a weight higher than another participant will have normally more chance to be selected in the raffle",
-            " weight can represent the number of raffle tickets for this participant.",
-            " weight can also represent the amount staked in dAppStaking, ..."
-          ],
-          "label": "OracleDataManager::add_participants",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "oracledatamanager_external",
-              "AddParticipantsOutput"
-            ],
-            "type": 24
-          },
-          "selector": "0x17739fc5"
-        },
-        {
-          "args": [
-            {
-              "label": "era",
-              "type": {
-                "displayName": [
-                  "oracledatamanager_external",
-                  "AddParticipantInput1"
-                ],
-                "type": 5
-              }
-            },
-            {
-              "label": "participant",
-              "type": {
-                "displayName": [
-                  "oracledatamanager_external",
-                  "AddParticipantInput2"
-                ],
-                "type": 2
-              }
-            },
-            {
-              "label": "weight",
-              "type": {
-                "displayName": [
-                  "oracledatamanager_external",
-                  "AddParticipantInput3"
-                ],
-                "type": 6
-              }
-            }
-          ],
-          "docs": [
-            " add a participant in the raffle for a given era",
-            " a participant with a weight higher than another participant will have normally more chance to be selected in the raffle",
-            " weight can represent the number of raffle tickets for this participant.",
-            " weight can also represent the amount staked in dAppStaking, ..."
-          ],
-          "label": "OracleDataManager::add_participant",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "oracledatamanager_external",
-              "AddParticipantOutput"
-            ],
-            "type": 24
-          },
-          "selector": "0x64547cee"
-        },
-        {
-          "args": [
-            {
-              "label": "role",
-              "type": {
-                "displayName": [
-                  "accesscontrol_external",
-                  "HasRoleInput1"
-                ],
-                "type": 5
-              }
-            },
-            {
-              "label": "address",
-              "type": {
-                "displayName": [
-                  "accesscontrol_external",
-                  "HasRoleInput2"
-                ],
-                "type": 2
-              }
-            }
-          ],
-          "docs": [
-            " Returns `true` if `account` has been granted `role`."
-          ],
-          "label": "AccessControl::has_role",
-          "mutates": false,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "accesscontrol_external",
-              "HasRoleOutput"
-            ],
-            "type": 26
-          },
-          "selector": "0xc1d9ac18"
-        },
-        {
-          "args": [
-            {
-              "label": "role",
-              "type": {
-                "displayName": [
-                  "accesscontrol_external",
-                  "GrantRoleInput1"
-                ],
-                "type": 5
-              }
-            },
-            {
-              "label": "account",
-              "type": {
-                "displayName": [
-                  "accesscontrol_external",
-                  "GrantRoleInput2"
-                ],
-                "type": 2
-              }
-            }
-          ],
-          "docs": [
-            " Grants `role` to `account`.",
-            "",
-            " On success a `RoleGranted` event is emitted.",
-            "",
-            " # Errors",
-            "",
-            " Returns with `MissingRole` error if caller can't grant the role.",
-            " Returns with `RoleRedundant` error `account` has `role`."
-          ],
-          "label": "AccessControl::grant_role",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "accesscontrol_external",
-              "GrantRoleOutput"
-            ],
-            "type": 27
-          },
-          "selector": "0x4ac062fd"
-        },
-        {
-          "args": [
-            {
-              "label": "role",
-              "type": {
-                "displayName": [
-                  "accesscontrol_external",
-                  "RenounceRoleInput1"
-                ],
-                "type": 5
-              }
-            },
-            {
-              "label": "account",
-              "type": {
-                "displayName": [
-                  "accesscontrol_external",
-                  "RenounceRoleInput2"
-                ],
-                "type": 2
-              }
-            }
-          ],
-          "docs": [
-            " Revokes `role` from the calling account.",
-            " Roles are often managed via `grant_role` and `revoke_role`: this function's",
-            " purpose is to provide a mechanism for accounts to lose their privileges",
-            " if they are compromised (such as when a trusted device is misplaced).",
-            "",
-            " On success a `RoleRevoked` event is emitted.",
-            "",
-            " # Errors",
-            "",
-            " Returns with `InvalidCaller` error if caller is not `account`.",
-            " Returns with `MissingRole` error if `account` doesn't have `role`."
-          ],
-          "label": "AccessControl::renounce_role",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "accesscontrol_external",
-              "RenounceRoleOutput"
-            ],
-            "type": 27
-          },
-          "selector": "0xeaf1248a"
-        },
-        {
-          "args": [
-            {
-              "label": "role",
-              "type": {
-                "displayName": [
-                  "accesscontrol_external",
-                  "RevokeRoleInput1"
-                ],
-                "type": 5
-              }
-            },
-            {
-              "label": "account",
-              "type": {
-                "displayName": [
-                  "accesscontrol_external",
-                  "RevokeRoleInput2"
-                ],
-                "type": 2
-              }
-            }
-          ],
-          "docs": [
-            " Revokes `role` from `account`.",
-            "",
-            " On success a `RoleRevoked` event is emitted.",
-            "",
-            " # Errors",
-            "",
-            " Returns with `MissingRole` error if caller can't grant the `role` or if `account` doesn't have `role`."
-          ],
-          "label": "AccessControl::revoke_role",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "accesscontrol_external",
-              "RevokeRoleOutput"
-            ],
-            "type": 27
-          },
-          "selector": "0x6e4f0991"
-        },
-        {
-          "args": [
-            {
-              "label": "role",
-              "type": {
-                "displayName": [
-                  "accesscontrol_external",
-                  "GetRoleAdminInput1"
-                ],
-                "type": 5
-              }
-            }
-          ],
-          "docs": [
-            " Returns the admin role that controls `role`. See `grant_role` and `revoke_role`."
-          ],
-          "label": "AccessControl::get_role_admin",
-          "mutates": false,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "accesscontrol_external",
-              "GetRoleAdminOutput"
-            ],
-            "type": 5
-          },
-          "selector": "0x83da3bb2"
-        }
-      ]
-    },
-    "storage": {
-      "struct": {
-        "fields": [
-          {
-            "layout": {
-              "struct": {
-                "fields": [
-                  {
-                    "layout": {
-                      "cell": {
-                        "key": "0xcce844a900000000000000000000000000000000000000000000000000000000",
-                        "ty": 0
-                      }
-                    },
-                    "name": "participants"
-                  },
-                  {
-                    "layout": {
-                      "cell": {
-                        "key": "0xcde844a900000000000000000000000000000000000000000000000000000000",
-                        "ty": 7
-                      }
-                    },
-                    "name": "rewards"
-                  }
-                ]
-              }
-            },
-            "name": "oracle_data"
-          },
-          {
-            "layout": {
-              "struct": {
-                "fields": [
-                  {
-                    "layout": {
-                      "cell": {
-                        "key": "0x75b08c5a00000000000000000000000000000000000000000000000000000000",
-                        "ty": 10
-                      }
-                    },
-                    "name": "admin_roles"
-                  },
-                  {
-                    "layout": {
-                      "struct": {
-                        "fields": [
-                          {
-                            "layout": {
-                              "cell": {
-                                "key": "0x2779f6fc00000000000000000000000000000000000000000000000000000000",
-                                "ty": 13
-                              }
-                            },
-                            "name": "members"
-                          },
-                          {
-                            "layout": {
-                              "enum": {
-                                "dispatchKey": "0x2879f6fc00000000000000000000000000000000000000000000000000000000",
-                                "variants": {
-                                  "0": {
-                                    "fields": [
-                                      {
-                                        "layout": {
-                                          "cell": {
-                                            "key": "0x2979f6fc00000000000000000000000000000000000000000000000000000000",
-                                            "ty": 15
-                                          }
-                                        },
-                                        "name": null
-                                      }
-                                    ]
-                                  },
-                                  "1": {
-                                    "fields": []
-                                  }
-                                }
-                              }
-                            },
-                            "name": "_reserved"
-                          }
-                        ]
-                      }
-                    },
-                    "name": "members"
-                  },
-                  {
-                    "layout": {
-                      "enum": {
-                        "dispatchKey": "0x76b08c5a00000000000000000000000000000000000000000000000000000000",
-                        "variants": {
-                          "0": {
-                            "fields": [
-                              {
-                                "layout": {
-                                  "cell": {
-                                    "key": "0x77b08c5a00000000000000000000000000000000000000000000000000000000",
-                                    "ty": 15
-                                  }
-                                },
-                                "name": null
-                              }
-                            ]
-                          },
-                          "1": {
-                            "fields": []
-                          }
-                        }
-                      }
-                    },
-                    "name": "_reserved"
-                  }
-                ]
-              }
-            },
-            "name": "access"
-          }
-        ]
+        "selector": "0x9bae9d5e"
       }
+    ],
+    "docs": [],
+    "events": [],
+    "lang_error": {
+      "displayName": [
+        "ink",
+        "LangError"
+      ],
+      "type": 9
     },
-    "types": [
+    "messages": [
       {
-        "id": 0,
-        "type": {
-          "def": {
-            "sequence": {
-              "type": 1
+        "args": [
+          {
+            "label": "new_code_hash",
+            "type": {
+              "displayName": [],
+              "type": 3
             }
           }
-        }
+        ],
+        "docs": [],
+        "label": "upgrade_contract",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 10
+        },
+        "selector": "0x1345543d"
       },
       {
-        "id": 1,
-        "type": {
-          "def": {
-            "tuple": [
-              2,
-              5,
-              6
-            ]
-          }
-        }
+        "args": [],
+        "docs": [],
+        "label": "get_role_oracle_data_manager",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 14
+        },
+        "selector": "0x0af3569d"
       },
       {
-        "id": 2,
-        "type": {
-          "def": {
-            "composite": {
-              "fields": [
-                {
-                  "type": 3,
-                  "typeName": "[u8; 32]"
-                }
-              ]
-            }
-          },
-          "path": [
-            "ink_env",
-            "types",
-            "AccountId"
-          ]
-        }
-      },
-      {
-        "id": 3,
-        "type": {
-          "def": {
-            "array": {
-              "len": 32,
-              "type": 4
-            }
-          }
-        }
-      },
-      {
-        "id": 4,
-        "type": {
-          "def": {
-            "primitive": "u8"
-          }
-        }
-      },
-      {
-        "id": 5,
-        "type": {
-          "def": {
-            "primitive": "u32"
-          }
-        }
-      },
-      {
-        "id": 6,
-        "type": {
-          "def": {
-            "primitive": "u128"
-          }
-        }
-      },
-      {
-        "id": 7,
-        "type": {
-          "def": {
-            "composite": {
-              "fields": [
-                {
-                  "type": 8
-                }
-              ]
-            }
-          },
-          "params": [
-            {
-              "name": "K",
+        "args": [
+          {
+            "label": "era",
+            "type": {
+              "displayName": [
+                "oracledataconsumer_external",
+                "GetDataInput1"
+              ],
               "type": 5
-            },
-            {
-              "name": "V",
+            }
+          }
+        ],
+        "docs": [
+          " return the data for a given era"
+        ],
+        "label": "OracleDataConsumer::get_data",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 15
+        },
+        "selector": "0xb304a07d"
+      },
+      {
+        "args": [
+          {
+            "label": "era",
+            "type": {
+              "displayName": [
+                "oracledatamanager_external",
+                "AddParticipantInput1"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "participant",
+            "type": {
+              "displayName": [
+                "oracledatamanager_external",
+                "AddParticipantInput2"
+              ],
+              "type": 2
+            }
+          },
+          {
+            "label": "weight",
+            "type": {
+              "displayName": [
+                "oracledatamanager_external",
+                "AddParticipantInput3"
+              ],
               "type": 6
             }
+          }
+        ],
+        "docs": [
+          " add a participant in the raffle for a given era",
+          " a participant with a weight higher than another participant will have normally more chance to be selected in the raffle",
+          " weight can represent the number of raffle tickets for this participant.",
+          " weight can also represent the amount staked in dAppStaking, ..."
+        ],
+        "label": "OracleDataManager::add_participant",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
           ],
-          "path": [
-            "openbrush_lang",
-            "storage",
-            "mapping",
-            "Mapping"
-          ]
-        }
+          "type": 19
+        },
+        "selector": "0x64547cee"
       },
       {
-        "id": 8,
-        "type": {
-          "def": {
-            "sequence": {
-              "type": 9
-            }
-          }
-        }
-      },
-      {
-        "id": 9,
-        "type": {
-          "def": {
-            "tuple": [
-              5,
-              6
-            ]
-          }
-        }
-      },
-      {
-        "id": 10,
-        "type": {
-          "def": {
-            "composite": {
-              "fields": [
-                {
-                  "type": 11
-                }
-              ]
-            }
-          },
-          "params": [
-            {
-              "name": "K",
-              "type": 5
-            },
-            {
-              "name": "V",
+        "args": [
+          {
+            "label": "era",
+            "type": {
+              "displayName": [
+                "oracledatamanager_external",
+                "ClearDataInput1"
+              ],
               "type": 5
             }
+          }
+        ],
+        "docs": [
+          " Clear the data (participants and rewards) stored for a given era"
+        ],
+        "label": "OracleDataManager::clear_data",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
           ],
-          "path": [
-            "openbrush_lang",
-            "storage",
-            "mapping",
-            "Mapping"
-          ]
-        }
+          "type": 19
+        },
+        "selector": "0x76cc563e"
       },
       {
-        "id": 11,
-        "type": {
-          "def": {
-            "sequence": {
-              "type": 12
-            }
-          }
-        }
-      },
-      {
-        "id": 12,
-        "type": {
-          "def": {
-            "tuple": [
-              5,
-              5
-            ]
-          }
-        }
-      },
-      {
-        "id": 13,
-        "type": {
-          "def": {
-            "composite": {
-              "fields": [
-                {
-                  "type": 16
-                }
-              ]
+        "args": [
+          {
+            "label": "era",
+            "type": {
+              "displayName": [
+                "oracledatamanager_external",
+                "AddParticipantsInput1"
+              ],
+              "type": 5
             }
           },
-          "params": [
-            {
-              "name": "K",
-              "type": 14
-            },
-            {
-              "name": "V",
-              "type": 15
-            }
-          ],
-          "path": [
-            "openbrush_lang",
-            "storage",
-            "mapping",
-            "Mapping"
-          ]
-        }
-      },
-      {
-        "id": 14,
-        "type": {
-          "def": {
-            "tuple": [
-              5,
-              2
-            ]
-          }
-        }
-      },
-      {
-        "id": 15,
-        "type": {
-          "def": {
-            "tuple": []
-          }
-        }
-      },
-      {
-        "id": 16,
-        "type": {
-          "def": {
-            "sequence": {
+          {
+            "label": "participants",
+            "type": {
+              "displayName": [
+                "oracledatamanager_external",
+                "AddParticipantsInput2"
+              ],
               "type": 17
             }
           }
-        }
+        ],
+        "docs": [
+          " add participants in the raffle for a given era",
+          " a participant with a weight higher than another participant will have normally more chance to be selected in the raffle",
+          " weight can represent the number of raffle tickets for this participant.",
+          " weight can also represent the amount staked in dAppStaking, ..."
+        ],
+        "label": "OracleDataManager::add_participants",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 19
+        },
+        "selector": "0x17739fc5"
       },
       {
-        "id": 17,
-        "type": {
-          "def": {
-            "tuple": [
-              14,
-              15
-            ]
-          }
-        }
-      },
-      {
-        "id": 18,
-        "type": {
-          "def": {
-            "variant": {
-              "variants": [
-                {
-                  "fields": [
-                    {
-                      "type": 15
-                    }
-                  ],
-                  "index": 0,
-                  "name": "Ok"
-                },
-                {
-                  "fields": [
-                    {
-                      "type": 19
-                    }
-                  ],
-                  "index": 1,
-                  "name": "Err"
-                }
-              ]
+        "args": [
+          {
+            "label": "era",
+            "type": {
+              "displayName": [
+                "oracledatamanager_external",
+                "SetRewardsInput1"
+              ],
+              "type": 5
             }
           },
-          "params": [
+          {
+            "label": "reward",
+            "type": {
+              "displayName": [
+                "oracledatamanager_external",
+                "SetRewardsInput2"
+              ],
+              "type": 6
+            }
+          }
+        ],
+        "docs": [
+          " Set the rewards to share between participants"
+        ],
+        "label": "OracleDataManager::set_rewards",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 19
+        },
+        "selector": "0xca41eda6"
+      },
+      {
+        "args": [
+          {
+            "label": "role",
+            "type": {
+              "displayName": [
+                "accesscontrol_external",
+                "RevokeRoleInput1"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "account",
+            "type": {
+              "displayName": [
+                "accesscontrol_external",
+                "RevokeRoleInput2"
+              ],
+              "type": 2
+            }
+          }
+        ],
+        "docs": [
+          " Revokes `role` from `account`.",
+          "",
+          " On success a `RoleRevoked` event is emitted.",
+          "",
+          " # Errors",
+          "",
+          " Returns with `MissingRole` error if caller can't grant the `role` or if `account` doesn't have `role`."
+        ],
+        "label": "AccessControl::revoke_role",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 22
+        },
+        "selector": "0x6e4f0991"
+      },
+      {
+        "args": [
+          {
+            "label": "role",
+            "type": {
+              "displayName": [
+                "accesscontrol_external",
+                "GetRoleAdminInput1"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "docs": [
+          " Returns the admin role that controls `role`. See `grant_role` and `revoke_role`."
+        ],
+        "label": "AccessControl::get_role_admin",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 14
+        },
+        "selector": "0x83da3bb2"
+      },
+      {
+        "args": [
+          {
+            "label": "role",
+            "type": {
+              "displayName": [
+                "accesscontrol_external",
+                "HasRoleInput1"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "address",
+            "type": {
+              "displayName": [
+                "accesscontrol_external",
+                "HasRoleInput2"
+              ],
+              "type": 2
+            }
+          }
+        ],
+        "docs": [
+          " Returns `true` if `account` has been granted `role`."
+        ],
+        "label": "AccessControl::has_role",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 24
+        },
+        "selector": "0xc1d9ac18"
+      },
+      {
+        "args": [
+          {
+            "label": "role",
+            "type": {
+              "displayName": [
+                "accesscontrol_external",
+                "GrantRoleInput1"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "account",
+            "type": {
+              "displayName": [
+                "accesscontrol_external",
+                "GrantRoleInput2"
+              ],
+              "type": 2
+            }
+          }
+        ],
+        "docs": [
+          " Grants `role` to `account`.",
+          "",
+          " On success a `RoleGranted` event is emitted.",
+          "",
+          " # Errors",
+          "",
+          " Returns with `MissingRole` error if caller can't grant the role.",
+          " Returns with `RoleRedundant` error `account` has `role`."
+        ],
+        "label": "AccessControl::grant_role",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 22
+        },
+        "selector": "0x4ac062fd"
+      },
+      {
+        "args": [
+          {
+            "label": "role",
+            "type": {
+              "displayName": [
+                "accesscontrol_external",
+                "RenounceRoleInput1"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "label": "account",
+            "type": {
+              "displayName": [
+                "accesscontrol_external",
+                "RenounceRoleInput2"
+              ],
+              "type": 2
+            }
+          }
+        ],
+        "docs": [
+          " Revokes `role` from the calling account.",
+          " Roles are often managed via `grant_role` and `revoke_role`: this function's",
+          " purpose is to provide a mechanism for accounts to lose their privileges",
+          " if they are compromised (such as when a trusted device is misplaced).",
+          "",
+          " On success a `RoleRevoked` event is emitted.",
+          "",
+          " # Errors",
+          "",
+          " Returns with `InvalidCaller` error if caller is not `account`.",
+          " Returns with `MissingRole` error if `account` doesn't have `role`."
+        ],
+        "label": "AccessControl::renounce_role",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 22
+        },
+        "selector": "0xeaf1248a"
+      }
+    ]
+  },
+  "storage": {
+    "root": {
+      "layout": {
+        "struct": {
+          "fields": [
             {
-              "name": "T",
-              "type": 15
+              "layout": {
+                "struct": {
+                  "fields": [
+                    {
+                      "layout": {
+                        "leaf": {
+                          "key": "0x00000000",
+                          "ty": 0
+                        }
+                      },
+                      "name": "participants"
+                    },
+                    {
+                      "layout": {
+                        "root": {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x529f1571",
+                              "ty": 6
+                            }
+                          },
+                          "root_key": "0x529f1571"
+                        }
+                      },
+                      "name": "rewards"
+                    }
+                  ],
+                  "name": "Data"
+                }
+              },
+              "name": "oracle_data"
             },
             {
-              "name": "E",
-              "type": 19
+              "layout": {
+                "struct": {
+                  "fields": [
+                    {
+                      "layout": {
+                        "root": {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x6a2cd2b4",
+                              "ty": 5
+                            }
+                          },
+                          "root_key": "0x6a2cd2b4"
+                        }
+                      },
+                      "name": "admin_roles"
+                    },
+                    {
+                      "layout": {
+                        "struct": {
+                          "fields": [
+                            {
+                              "layout": {
+                                "root": {
+                                  "layout": {
+                                    "leaf": {
+                                      "key": "0x5d5db175",
+                                      "ty": 7
+                                    }
+                                  },
+                                  "root_key": "0x5d5db175"
+                                }
+                              },
+                              "name": "members"
+                            },
+                            {
+                              "layout": {
+                                "enum": {
+                                  "dispatchKey": "0x00000000",
+                                  "name": "Option",
+                                  "variants": {
+                                    "0": {
+                                      "fields": [],
+                                      "name": "None"
+                                    },
+                                    "1": {
+                                      "fields": [
+                                        {
+                                          "layout": {
+                                            "leaf": {
+                                              "key": "0x00000000",
+                                              "ty": 7
+                                            }
+                                          },
+                                          "name": "0"
+                                        }
+                                      ],
+                                      "name": "Some"
+                                    }
+                                  }
+                                }
+                              },
+                              "name": "_reserved"
+                            }
+                          ],
+                          "name": "Members"
+                        }
+                      },
+                      "name": "members"
+                    },
+                    {
+                      "layout": {
+                        "enum": {
+                          "dispatchKey": "0x00000000",
+                          "name": "Option",
+                          "variants": {
+                            "0": {
+                              "fields": [],
+                              "name": "None"
+                            },
+                            "1": {
+                              "fields": [
+                                {
+                                  "layout": {
+                                    "leaf": {
+                                      "key": "0x00000000",
+                                      "ty": 7
+                                    }
+                                  },
+                                  "name": "0"
+                                }
+                              ],
+                              "name": "Some"
+                            }
+                          }
+                        }
+                      },
+                      "name": "_reserved"
+                    }
+                  ],
+                  "name": "Data"
+                }
+              },
+              "name": "access"
             }
           ],
-          "path": [
-            "Result"
-          ]
+          "name": "Contract"
         }
       },
-      {
-        "id": 19,
-        "type": {
-          "def": {
-            "variant": {
-              "variants": [
-                {
-                  "fields": [
-                    {
-                      "type": 20,
-                      "typeName": "AccessControlError"
-                    }
-                  ],
-                  "index": 0,
-                  "name": "AccessControlError"
-                },
-                {
-                  "index": 1,
-                  "name": "UpgradeError"
-                }
-              ]
-            }
-          },
-          "path": [
-            "lucky_oracle",
-            "lucky_oracle",
-            "ContractError"
-          ]
-        }
-      },
-      {
-        "id": 20,
-        "type": {
-          "def": {
-            "variant": {
-              "variants": [
-                {
-                  "index": 0,
-                  "name": "InvalidCaller"
-                },
-                {
-                  "index": 1,
-                  "name": "MissingRole"
-                },
-                {
-                  "index": 2,
-                  "name": "RoleRedundant"
-                }
-              ]
-            }
-          },
-          "path": [
-            "openbrush_contracts",
-            "traits",
-            "errors",
-            "access_control",
-            "AccessControlError"
-          ]
-        }
-      },
-      {
-        "id": 21,
-        "type": {
-          "def": {
-            "composite": {
-              "fields": [
-                {
-                  "name": "participants",
-                  "type": 22,
-                  "typeName": "Vec<(AccountId, Balance)>"
-                },
-                {
-                  "name": "rewards",
-                  "type": 6,
-                  "typeName": "Balance"
-                }
-              ]
-            }
-          },
-          "path": [
-            "lucky",
-            "traits",
-            "oracle",
-            "OracleData"
-          ]
-        }
-      },
-      {
-        "id": 22,
-        "type": {
-          "def": {
-            "sequence": {
-              "type": 23
-            }
+      "root_key": "0x00000000"
+    }
+  },
+  "types": [
+    {
+      "id": 0,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 1
           }
         }
-      },
-      {
-        "id": 23,
-        "type": {
-          "def": {
-            "tuple": [
-              2,
-              6
-            ]
-          }
-        }
-      },
-      {
-        "id": 24,
-        "type": {
-          "def": {
-            "variant": {
-              "variants": [
-                {
-                  "fields": [
-                    {
-                      "type": 15
-                    }
-                  ],
-                  "index": 0,
-                  "name": "Ok"
-                },
-                {
-                  "fields": [
-                    {
-                      "type": 25
-                    }
-                  ],
-                  "index": 1,
-                  "name": "Err"
-                }
-              ]
-            }
-          },
-          "params": [
-            {
-              "name": "T",
-              "type": 15
-            },
-            {
-              "name": "E",
-              "type": 25
-            }
-          ],
-          "path": [
-            "Result"
-          ]
-        }
-      },
-      {
-        "id": 25,
-        "type": {
-          "def": {
-            "variant": {
-              "variants": [
-                {
-                  "fields": [
-                    {
-                      "type": 20,
-                      "typeName": "AccessControlError"
-                    }
-                  ],
-                  "index": 0,
-                  "name": "AccessControlError"
-                }
-              ]
-            }
-          },
-          "path": [
-            "lucky",
-            "traits",
-            "oracle",
-            "OracleManagementError"
-          ]
-        }
-      },
-      {
-        "id": 26,
-        "type": {
-          "def": {
-            "primitive": "bool"
-          }
-        }
-      },
-      {
-        "id": 27,
-        "type": {
-          "def": {
-            "variant": {
-              "variants": [
-                {
-                  "fields": [
-                    {
-                      "type": 15
-                    }
-                  ],
-                  "index": 0,
-                  "name": "Ok"
-                },
-                {
-                  "fields": [
-                    {
-                      "type": 20
-                    }
-                  ],
-                  "index": 1,
-                  "name": "Err"
-                }
-              ]
-            }
-          },
-          "params": [
-            {
-              "name": "T",
-              "type": 15
-            },
-            {
-              "name": "E",
-              "type": 20
-            }
-          ],
-          "path": [
-            "Result"
+      }
+    },
+    {
+      "id": 1,
+      "type": {
+        "def": {
+          "tuple": [
+            2,
+            5,
+            6
           ]
         }
       }
-    ]
-  }
+    },
+    {
+      "id": 2,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 3,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "types",
+          "AccountId"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "type": {
+        "def": {
+          "array": {
+            "len": 32,
+            "type": 4
+          }
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": {
+        "def": {
+          "primitive": "u8"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": {
+        "def": {
+          "primitive": "u32"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": {
+        "def": {
+          "primitive": "u128"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": {
+        "def": {
+          "tuple": []
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 7
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 9
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 7
+          },
+          {
+            "name": "E",
+            "type": 9
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 1,
+                "name": "CouldNotReadInput"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "LangError"
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 11
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 9
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 11
+          },
+          {
+            "name": "E",
+            "type": 9
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 7
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 12
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 7
+          },
+          {
+            "name": "E",
+            "type": 12
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 13,
+                    "typeName": "AccessControlError"
+                  }
+                ],
+                "index": 0,
+                "name": "AccessControlError"
+              },
+              {
+                "index": 1,
+                "name": "UpgradeError"
+              }
+            ]
+          }
+        },
+        "path": [
+          "lucky_oracle",
+          "lucky_oracle",
+          "ContractError"
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "InvalidCaller"
+              },
+              {
+                "index": 1,
+                "name": "MissingRole"
+              },
+              {
+                "index": 2,
+                "name": "RoleRedundant"
+              }
+            ]
+          }
+        },
+        "path": [
+          "openbrush_contracts",
+          "traits",
+          "errors",
+          "access_control",
+          "AccessControlError"
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 5
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 9
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 5
+          },
+          {
+            "name": "E",
+            "type": 9
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 16
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 9
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 16
+          },
+          {
+            "name": "E",
+            "type": 9
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "participants",
+                "type": 17,
+                "typeName": "Vec<(AccountId, Balance)>"
+              },
+              {
+                "name": "rewards",
+                "type": 6,
+                "typeName": "Balance"
+              }
+            ]
+          }
+        },
+        "path": [
+          "lucky",
+          "traits",
+          "oracle",
+          "OracleData"
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 18
+          }
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": {
+        "def": {
+          "tuple": [
+            2,
+            6
+          ]
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 20
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 9
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 20
+          },
+          {
+            "name": "E",
+            "type": 9
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 7
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 21
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 7
+          },
+          {
+            "name": "E",
+            "type": 21
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 13,
+                    "typeName": "AccessControlError"
+                  }
+                ],
+                "index": 0,
+                "name": "AccessControlError"
+              }
+            ]
+          }
+        },
+        "path": [
+          "lucky",
+          "traits",
+          "oracle",
+          "OracleManagementError"
+        ]
+      }
+    },
+    {
+      "id": 22,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 23
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 9
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 23
+          },
+          {
+            "name": "E",
+            "type": 9
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 23,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 7
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 13
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 7
+          },
+          {
+            "name": "E",
+            "type": 13
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 24,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 25
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 9
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 25
+          },
+          {
+            "name": "E",
+            "type": 9
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 25,
+      "type": {
+        "def": {
+          "primitive": "bool"
+        }
+      }
+    }
+  ],
+  "version": "4"
 }

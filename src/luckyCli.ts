@@ -16,6 +16,7 @@ const argv = yargs(process.argv.slice(2)).options({
     cl: {alias: 'claim', desc: 'Claim dappStaking developer rewards for a given era - era is mandatory'},
     ri: {alias: 'readIndex', desc: 'Read data from the indexer for a given era - era is mandatory'},
     so: {alias: 'setOracle', desc: 'Set Oracle data for a given era - era is mandatory'},
+    co: {alias: 'clearOracle', desc: 'Clear Oracle data for a given era - era is mandatory'},
     r:  {alias: 'raffle', desc: 'Start the raffle for a given era - era is mandatory'},
     a:  {alias: 'all', desc: 'Equivalent to --checks --claim --setOracle --raffle for a given era or for for all era (from --lastEra to --currentEra) if no era is provided'},
     era: {type: 'number', desc: 'Given era'},
@@ -32,17 +33,17 @@ async function run() : Promise<void>{
 
     if (!argv.displayConfiguration 
         && !argv.currentEra && !argv.lastEraReceivedReward && !argv.lastEraRaffleDone && !argv.readIndex
-        && !argv.checks && !argv.claim && !argv.setOracle && !argv.raffle && !argv.all 
+        && !argv.checks && !argv.claim && !argv.setOracle && !argv.raffle && !argv.clearOracle && !argv.all 
         ) {
         return Promise.reject('At least one option is required. Use --help for more information');
     }
 
-    if (argv.claim || argv.readIndex || argv.setOracle || argv.raffle) {
+    if (argv.claim || argv.readIndex || argv.setOracle || argv.raffle || argv.clearOracle) {
         if (argv.era == undefined){
             return Promise.reject('An era is required for this options. Use --help for more information');
         }
         if (argv.all){
-            return Promise.reject('The option --all is not allow with --claim or --readIndex or ');
+            return Promise.reject('The option --all is not allow with --claim or --readIndex or --setOracle or --raffle or --clearOracle');
         }
     }
 
@@ -50,13 +51,14 @@ async function run() : Promise<void>{
     const claim = argv.claim != undefined || argv.all != undefined; 
     const readIndex = argv.readIndex != undefined || argv.all != undefined;
     const setOracle = argv.setOracle != undefined || argv.all != undefined;
+    const clearOracle = argv.clearOracle != undefined || argv.all != undefined;
     const raffle = argv.raffle != undefined || argv.all != undefined;
 
     if (argv.displayConfiguration) {
         displayConfiguration();
     }
 
-    if (argv.lastEraRaffleDone || argv.currentEra || checks || claim || setOracle || raffle) {
+    if (argv.lastEraRaffleDone || argv.currentEra || checks || claim || setOracle || raffle || clearOracle) {
         await initConnection();
     }
     
@@ -78,12 +80,12 @@ async function run() : Promise<void>{
     }
 
 
-    if (claim || readIndex || setOracle || raffle) {
+    if (claim || readIndex || setOracle || raffle || clearOracle) {
 
         if (argv.era == undefined) {
             await runNextEras();
         } else {
-            await runEra(argv.era, claim, readIndex, setOracle, raffle);
+            await runEra(argv.era, claim, readIndex, setOracle, raffle, clearOracle);
         }
 
     }

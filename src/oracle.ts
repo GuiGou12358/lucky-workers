@@ -64,3 +64,29 @@ export async function setParticipants(
 
     console.log('Participants set in the Oracle');
 }
+
+
+export async function clearData(
+    era: Number
+) : Promise<void>{
+
+    console.log('Clear data for era %s in the Oracle ... ', era);
+
+    // maximum gas to be consumed for the call. if limit is too small the call will fail.
+    const gasLimit: WeightV2 = api.registry.createType('WeightV2', 
+        {refTime: 10000000000, proofSize: 100000}
+    );
+    // a limit to how much Balance to be used to pay for the storage created by the contract call
+    // if null is passed, unlimited balance can be used
+    const storageDepositLimit = null;
+
+
+    const tx = luckyOracleContract.tx['oracleDataManager::clearData'](
+        { storageDepositLimit, gasLimit }, 
+        era
+        );
+
+    await signAndSend(tx);
+
+    console.log('Data clear in the Oracle');
+}
