@@ -120,9 +120,8 @@ function readResult(result: ISubmittableResult, extrinsicResult: ExtrinsicResult
                 return true;
             } else if (section == 'system' && method == 'ExtrinsicFailed'){
                 extrinsicResult.failed = true;
-                if (isDebug()){
-                    console.log(' %s : %s.%s:: %s', phase, section, method, data);
-                }
+                console.log(' %s : %s.%s:: %s', phase, section, method, data);
+                
                 /*                
                 console.log(data.toHuman());
                 const [accountId, contractEvent] = data;      

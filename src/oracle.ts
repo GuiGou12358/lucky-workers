@@ -1,6 +1,7 @@
 import { WeightV2, Balance } from '@polkadot/types/interfaces';
 import { api, signAndSend, luckyOracleContract } from './txHelper';
 import { Participant } from './queryIndexer';
+import { isDebug } from './luckyCli';
 
 
 export async function setRewards(
@@ -12,7 +13,7 @@ export async function setRewards(
 
     // maximum gas to be consumed for the call. if limit is too small the call will fail.
     const gasLimit: WeightV2 = api.registry.createType('WeightV2', 
-        {refTime: 10000000000, proofSize: 100000}
+        {refTime: 30000000000, proofSize: 1000000}
     );
     
     // a limit to how much Balance to be used to pay for the storage created by the contract call
@@ -44,16 +45,20 @@ export async function setParticipants(
 
     // maximum gas to be consumed for the call. if limit is too small the call will fail.
     const gasLimit: WeightV2 = api.registry.createType('WeightV2', 
-        {refTime: 10000000000, proofSize: 100000}
+        {refTime: 30000000000, proofSize: 1000000}
     );
     // a limit to how much Balance to be used to pay for the storage created by the contract call
     // if null is passed, unlimited balance can be used
     const storageDepositLimit = null;
 
-    let args = participants.map( p => (
+    let args = participants.map( p => [
         api.registry.createType('AccountId', p.address), 
         api.registry.createType('Balance', p.stake)
-    ));
+    ]);
+
+    if (isDebug()){
+        args.forEach ( (arg) => console.log("participant %s staked %s", arg[0].toHuman(), arg[1].toHuman()) );
+    }
 
     const tx = luckyOracleContract.tx['oracleDataManager::addParticipants'](
         { storageDepositLimit, gasLimit }, 
@@ -74,7 +79,7 @@ export async function clearData(
 
     // maximum gas to be consumed for the call. if limit is too small the call will fail.
     const gasLimit: WeightV2 = api.registry.createType('WeightV2', 
-        {refTime: 10000000000, proofSize: 100000}
+        {refTime: 30000000000, proofSize: 1000000}
     );
     // a limit to how much Balance to be used to pay for the storage created by the contract call
     // if null is passed, unlimited balance can be used

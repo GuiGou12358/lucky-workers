@@ -12,7 +12,7 @@ export async function checkRaffleConfiguration() : Promise<void>{
   
     // maximum gas to be consumed for the call. if limit is too small the call will fail.
     const gasLimit: WeightV2 = api.registry.createType('WeightV2', 
-        {refTime: 10000000000, proofSize: 1000000}
+        {refTime: 30000000000, proofSize: 1000000}
     );
     
     // a limit to how much Balance to be used to pay for the storage created by the contract call
@@ -105,7 +105,7 @@ export async function getLastEraRaffleDone() : Promise<Number>{
        
     // maximum gas to be consumed for the call. if limit is too small the call will fail.
     const gasLimit: WeightV2 = api.registry.createType('WeightV2',
-        {refTime: 10000000000, proofSize: 1000000}
+        {refTime: 30000000000, proofSize: 1000000}
     );
     
     // a limit to how much Balance to be used to pay for the storage created by the contract call

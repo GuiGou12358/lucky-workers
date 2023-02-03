@@ -16,10 +16,10 @@ class Config {
     // astar: 
     dAppStakingDeveloperContractAddress = 'ZowLuDSzzxNMsVT6Ys3yRQ92p4WWUv8TVcowB2QTpg172cg';
 
-    // shibuya: Ydzxdwjp1RHtuKmKbxr98qaKgjfnDtfGURaeYZP3ZdbpSXE
+    // shibuya: X4GbVY6isdM63izN6UfDq4BkfR7oTNCSS4EezoJ5FnEXeWW
     // shiden: 
     // astar: 
-    luckyOracleContractAddress = 'Ydzxdwjp1RHtuKmKbxr98qaKgjfnDtfGURaeYZP3ZdbpSXE';
+    luckyOracleContractAddress = 'X4GbVY6isdM63izN6UfDq4BkfR7oTNCSS4EezoJ5FnEXeWW';
 
     // shibuya: W66fXdDBkcp7RkZmsS7qLLpjdHB4FDSqWgJArbvCYG3PQ48
     // shiden: 
