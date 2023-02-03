@@ -1,5 +1,5 @@
 
-export class Config {
+class Config {
 
     // shibuya: wss://rpc.shibuya.astar.network
     // shiden: 
@@ -39,3 +39,15 @@ export class Config {
      
    }
    
+export const config = new Config();
+
+export function displayConfiguration(){
+    console.log('RPC: %s', config.rpc);
+    console.log('dAppStaking application contract address: %s', config.dAppStakingApplicationContractAddress);
+    console.log('dAppStaking developer contract address: %s', config.dAppStakingDeveloperContractAddress);
+    console.log('lucky oracle contract address: %s', config.luckyOracleContractAddress);
+    console.log('reward manager contract address: %s', config.rewardManagerContractAddress);
+    console.log('raffle contract address: %s', config.luckyRaffleContractAddress);
+    console.log('subQL url: %s', config.subqlUrl);
+}
+

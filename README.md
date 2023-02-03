@@ -30,7 +30,7 @@ npm install
 Last, under the project directory, run following command to install all the dependency.
 
 ```
-npx ts-node src/workers.ts [Options]
+npx ts-node src/luckyCli.ts [Options]
 ```
 
 ```
