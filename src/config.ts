@@ -35,6 +35,7 @@ class Config {
     subqlUrl = 'http://localhost:3000/';
 
     /* IT'S STRONGLY RECOMMENDED TO USE A PROXY */
+    /*If you see this seed, don't rejoice, you will be able to have only testnet tokens ;) */
     worker_seed = 'element garage roast warfare annual success comic below spot axis yard audit'; 
      
    }
