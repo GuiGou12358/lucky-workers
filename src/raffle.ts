@@ -115,7 +115,8 @@ export async function getLastEraRaffleDone() : Promise<Number>{
     const {result, output} = await luckyRaffleContract.query['raffle::getLastEraDone'](worker.address, {gasLimit, storageDepositLimit});
 
     if (result.isOk){
-        const era = (Number) (output?.toPrimitive());
+        const value : string = output?.toString() ?? '';
+        const era = JSON.parse(value).ok as Number;
         console.log('Last era when we run the raffle: %s', era);
         return era;
     }
