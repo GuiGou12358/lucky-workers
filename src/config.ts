@@ -32,7 +32,9 @@ class Config {
     luckyRaffleContractAddress = 'X7Rxmt4JshNbZ9uEujXhAKkZBNSmpJwvZGPExCHpt6ebmCe';    
       
 
-    subqlUrl = 'http://localhost:3000/';
+    //subqlUrl = 'http://localhost:3000/';
+    subqlUrl = 'https://api.subquery.network/sq/GuiGou12358/lucky---shibuya/';
+    
 
     /* IT'S STRONGLY RECOMMENDED TO USE A PROXY */
     /*If you see this seed, don't rejoice, you will be able to have only testnet tokens ;) */
